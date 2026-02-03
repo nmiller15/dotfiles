@@ -47,16 +47,25 @@ def set_link_conf(path_str: str):
         raise ValueError('Invalid OS in file path')
 
 
-def backup_file_if_exists(file_path: str):
-    path = Path(file_path)
+def backup_file_if_exists(path: Path):
     if path.exists() or path.is_symlink():
         backup_path = path.with_name(path.name + ".backup")
-
-        if backup_path.exists() or backup_path.is_symlink():
-            backup_path.unlink()
+        try:
+            if backup_path.exists() or backup_path.is_symlink():
+                if backup_path.is_dir() and not backup_path.is_symlink():
+                    import shutil
+                    shutil.rmtree(backup_path)
+                else:
+                    backup_path.unlink()
+        except Exception as e:
+            logging.warning(
+                "Failed to remove existing backup %s: %s", backup_path, e)
 
         logging.debug("Backing up %s -> %s", path, backup_path)
-        path.rename(backup_path)  # moves the file/symlink
+        try:
+            path.rename(backup_path)
+        except Exception as e:
+            logging.warning("Failed to backup %s: %s", path, e)
 
 
 def construct_file(cfg: Path):
@@ -72,31 +81,49 @@ def construct_file(cfg: Path):
             f.write(f"{p}\n")
 
 
-def link_package(pkg: Path, link_conf: str):
-    links = open(Path(pkg) / link_conf, "r", encoding='utf-8').readlines()
+def link_package(pkg_name: str, link_conf: str):
+    import shutil
+
+    base = Path(__file__).resolve().parent
+    pkg_path = (base / pkg_name).resolve()
+    links_file = pkg_path / link_conf
+
+    if not links_file.exists():
+        logging.warning("Links config not found: %s", links_file)
+        return
+
+    with links_file.open("r", encoding="utf-8") as f:
+        links = [line.strip() for line in f if line.strip()]
 
     for i, link in enumerate(links):
         if link.startswith('#constructed'):
-            construct_file(Path(links[i + 1].split("=")[0]))
+            construct_file(pkg_path / links[i + 1].split("=")[0])
             continue
 
-        src = Path(__file__).resolve().parent / Path(pkg) / link.split("=")[0]
-        dest = link.split("=")[1].strip("\n")
-        dest = dest.replace("~", str(Path.home())).replace(
-            "$HOME", str(Path.home()))
+        src_rel, dest_str = link.split("=")
+        src_rel = src_rel.strip()
+        dest_str = dest_str.strip().replace("~", str(Path.home())).replace("$HOME", str(Path.home()))
 
-        src_path = Path(src)
-        dest_path = Path(dest)
+        # src_path is always relative to the package folder
+        src_path = (pkg_path / src_rel).resolve()
+        dest_path = Path(dest_str).resolve()
 
-        logging.debug('Attempting to link: %s -> %s', src_path, dest_path)
+        logging.debug("Linking %s -> %s", src_path, dest_path)
 
         backup_file_if_exists(dest_path)
         dest_path.parent.mkdir(parents=True, exist_ok=True)
 
-        assert not dest_path.exists()
-        assert not dest_path.is_symlink()
-        os.symlink(src_path, dest_path, target_is_directory=src_path.is_dir())
-        logging.info('Linked: %s <- %s', src_path, dest_path)
+        if dest_path.exists() or dest_path.is_symlink():
+            if dest_path.is_dir() and not dest_path.is_symlink():
+                shutil.rmtree(dest_path)
+            else:
+                dest_path.unlink()
+
+        try:
+            os.symlink(src_path, dest_path, target_is_directory=src_path.is_dir())
+            logging.info("Linked: %s -> %s", src_path, dest_path)
+        except OSError as e:
+            logging.error("Failed to link %s -> %s: %s", src_path, dest_path, e)
 
 
 def main():
