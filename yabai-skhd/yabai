@@ -1,0 +1,60 @@
+:: off
+
+# Yabai keybindings
+default < alt - 1 : yabai_launch 1 iTerm 
+default < alt - 2 : yabai_launch 2 Safari
+default < alt - 3 : yabai_launch 3 Obsidian
+default < alt - 4 : yabai_launch 4 "Visual Studio Code"
+default < alt - 5 : yabai_launch 5 "Postico 2"
+default < alt - 6 : yabai_launch 6 Messages
+default < alt - 7 : yabai_launch 7 Spark
+default < alt - 8 : yabai_launch 8 Spotify
+default < alt - 9 : yabai_launch 9 Finder
+default < alt - 0 : yabai_launch "10" "System Preferences"
+
+# Whkd keybindings to translate
+# Reload whkd configuration
+default < alt - r                 : skhd --restart-service 
+default < alt + shift - r         : yabai --restart-service
+
+# Open specific applications
+default < alt - return : open -F -n -a "iTerm"
+default < alt + shift - b : open -F -n -a "Safari"
+default < alt + shift - m : open -a "Spotify"
+default < alt + shift - c : open -a "Messages"
+default < alt + shift - o : open -a "Obsidian"
+default < alt + shift - t : open -a "Things3"
+default < alt + shift - a : open -a "ChatGPT"
+
+default < alt - m : yabai -m window --minimize
+default < alt - i ; off
+off < alt - i ; default
+
+
+# Focus windows
+default < alt - h : yabai -m window --focus west
+default < alt - j : yabai -m window --focus south
+default < alt - k : yabai -m window --focus north
+default < alt - l : yabai -m window --focus east
+
+# Move windows
+default < shift + alt - h : yabai -m window --warp west
+default < shift + alt - j : yabai -m window --warp south
+default < shift + alt - k : yabai -m window --warp north
+default < shift + alt - l : yabai -m window --warp east
+
+# Full screen 
+default < alt - f : yabai -m window --toggle zoom-fullscreen
+
+default < shift + alt - f : yabai -m window --toggle float
+default < shift + alt - s : yabai -m window --toggle sticky
+
+# Resise windows
+lctrl + alt - h : yabai -m window --resize left:-50:0; \
+                  yabai -m window --resize right:-50:0
+lctrl + alt - j : yabai -m window --resize bottom:0:50; \
+                  yabai -m window --resize top:0:50
+lctrl + alt - k : yabai -m window --resize top:0:-50; \
+                  yabai -m window --resize bottom:0:-50
+lctrl + alt - l : yabai -m window --resize right:50:0; \
+                  yabai -m window --resize left:50:0

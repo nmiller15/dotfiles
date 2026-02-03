@@ -729,13 +729,6 @@ require('lazy').setup({
       }
     end,
   },
-  {
-    'TheLeoP/powershell.nvim',
-    --- @type powershell.user_config
-    opts = {
-      bundle_path = 'C:/Users/NMiller/AppData/Local/nvim-data/mason/packages/powershell-editor-services',
-    },
-  },
   { -- Autoformat
     'stevearc/conform.nvim',
     event = { 'BufWritePre' },
@@ -772,7 +765,7 @@ require('lazy').setup({
         -- python = { "isort", "black" },
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
-        javascript = { 'prettierd', 'prettier', stop_after_first = true },
+        javascript = { 'prettier', stop_after_first = true },
       },
     },
   },
@@ -812,12 +805,10 @@ require('lazy').setup({
     build = 'npm install',
     ft = { 'javascript', 'typescript', 'css', 'html', 'json', 'markdown', 'yaml' },
     init = function()
-      -- Prettier settings
       vim.g['prettier#autoformat'] = 1
-      vim.g['prettier#autoformat_require_pragma'] = 0
-      vim.g['prettier#autoformat_config_present'] = 1
-      vim.g['prettier#config#tab_width'] = 4
-      vim.g['prettier#config#use_tabs'] = false
+      vim.g['prettier#tab_width'] = 4
+      vim.g['prettier#use_tabs'] = false
+      vim.g['prettier#exec_cmd_path'] = 'prettier --tab-width=4 --use-tabs=false'
     end,
   },
   { -- Github Copilot
@@ -975,7 +966,7 @@ require('lazy').setup({
       -- Load the colorscheme here.
       -- Like many other themes, this one has different styles, and you could load
       -- any other, such as 'tokyonight-storm', 'tokyonight-moon', or 'tokyonight-day'.
-      vim.cmd.colorscheme 'tokyonight-storm'
+      vim.cmd.colorscheme 'tokyonight-night'
     end,
   },
 

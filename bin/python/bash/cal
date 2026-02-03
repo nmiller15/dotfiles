@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+python3 -m calendar --first-weekday 6 %*
+exec python3 -m calendar --first-weekday 6 "$@"

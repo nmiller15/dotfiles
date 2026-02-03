@@ -1,7 +1,0 @@
-install_if_missing git "winget install Git.Git"
-install_if_missing gh "winget install GitHub.cli" 
-install_if_missing fzf "winget install fzf"
-install_if_missing jq "winget install jqlang.jq"
-install_if_missing tldr "winget install tldr" 
-install_if_missing less "winget install jftuga.less"
-install_if_missing sqlite3 "winget install SQLite.SQLite"

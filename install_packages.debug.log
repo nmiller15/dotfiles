@@ -1,0 +1,547 @@
+2026-01-15 21:18:12,531 - DEBUG - Starting install_packages.py
+2026-01-15 21:18:12,532 - CRITICAL - sys.argv count != 2
+2026-01-15 21:18:57,750 - DEBUG - Starting install_packages.py
+2026-01-15 21:19:43,765 - DEBUG - Starting install_packages.py
+2026-01-15 21:19:43,766 - CRITICAL - sys.argv count == <built-in method count of list object at 0x1091e83c0>
+2026-01-15 21:21:03,073 - DEBUG - Starting install_packages.py
+2026-01-15 21:21:46,672 - DEBUG - Starting install_packages.py
+2026-01-15 21:24:09,106 - DEBUG - Starting install_packages.py
+2026-01-15 21:24:09,107 - CRITICAL - sys.argv count == 2
+2026-01-15 21:24:30,119 - DEBUG - Starting install_packages.py
+2026-01-15 21:24:46,276 - DEBUG - Starting install_packages.py
+2026-01-15 21:24:46,277 - DEBUG - Found config file: test.mac.config
+2026-01-15 21:24:46,277 - DEBUG - Set conf_os: mac
+2026-01-15 21:24:46,277 - DEBUG - Set link_conf: .ln.config
+2026-01-15 21:24:46,277 - DEBUG - Handling package: test
+
+2026-01-15 21:27:48,568 - DEBUG - Starting install_packages.py
+2026-01-15 21:27:48,568 - DEBUG - Found config file: test.mac.config
+2026-01-15 21:27:48,568 - DEBUG - Found parent_dir /Users/nolanmiller/Projects/dotfiles-modules
+2026-01-15 21:27:48,568 - DEBUG - Set conf_os: mac
+2026-01-15 21:27:48,568 - DEBUG - Set link_conf: .ln.config
+2026-01-15 21:27:48,568 - DEBUG - Opening file: /Users/nolanmiller/Projects/dotfiles-modules/test.mac.config
+2026-01-15 21:27:48,569 - DEBUG - Handling package: test
+
+2026-01-15 21:28:29,350 - DEBUG - Starting install_packages.py
+2026-01-15 21:28:29,351 - DEBUG - Found config file: test.mac.config
+2026-01-15 21:28:29,351 - DEBUG - Found parent_dir /Users/nolanmiller/Projects/dotfiles-modules
+2026-01-15 21:28:29,351 - DEBUG - Set conf_os: mac
+2026-01-15 21:28:29,351 - DEBUG - Set link_conf: .ln.config
+2026-01-15 21:28:29,351 - DEBUG - Opening file: /Users/nolanmiller/Projects/dotfiles-modules/test.mac.config
+2026-01-15 21:28:29,351 - DEBUG - Handling package: test
+
+2026-01-15 21:31:18,398 - DEBUG - Starting install_packages.py
+2026-01-15 21:31:18,398 - DEBUG - Found config file: test.mac.config
+2026-01-15 21:31:18,398 - DEBUG - Found parent_dir /Users/nolanmiller/Projects/dotfiles-modules
+2026-01-15 21:31:18,398 - DEBUG - Set conf_os: mac
+2026-01-15 21:31:18,398 - DEBUG - Set link_conf: .ln.config
+2026-01-15 21:31:18,398 - DEBUG - Opening file: /Users/nolanmiller/Projects/dotfiles-modules/test.mac.config
+2026-01-15 21:31:18,399 - DEBUG - Handling package: test
+
+2026-01-15 21:31:18,399 - CRITICAL - Uncaught exception
+Traceback (most recent call last):
+  File "/Users/nolanmiller/Projects/dotfiles-modules/install_packages.py", line 82, in <module>
+    main()
+    ~~~~^^
+  File "/Users/nolanmiller/Projects/dotfiles-modules/install_packages.py", line 78, in main
+    link_package(package,  link_conf)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/nolanmiller/Projects/dotfiles-modules/install_packages.py", line 47, in link_package
+    links = open(link_conf, "r", encoding='utf-8').readlines()
+            ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '.ln.config'
+2026-01-15 21:32:19,531 - DEBUG - Starting install_packages.py
+2026-01-15 21:32:19,532 - DEBUG - Found config file: test.mac.config
+2026-01-15 21:32:19,532 - DEBUG - Found parent_dir /Users/nolanmiller/Projects/dotfiles-modules
+2026-01-15 21:32:19,532 - DEBUG - Set conf_os: mac
+2026-01-15 21:32:19,532 - DEBUG - Set link_conf: /Users/nolanmiller/Projects/dotfiles-modules/.ln.config
+2026-01-15 21:32:19,532 - DEBUG - Opening file: /Users/nolanmiller/Projects/dotfiles-modules/test.mac.config
+2026-01-15 21:32:19,533 - DEBUG - Handling package: test
+
+2026-01-15 21:32:19,533 - CRITICAL - Uncaught exception
+Traceback (most recent call last):
+  File "/Users/nolanmiller/Projects/dotfiles-modules/install_packages.py", line 82, in <module>
+    main()
+    ~~~~^^
+  File "/Users/nolanmiller/Projects/dotfiles-modules/install_packages.py", line 78, in main
+    link_package(package,  link_conf)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/nolanmiller/Projects/dotfiles-modules/install_packages.py", line 47, in link_package
+    links = open(link_conf, "r", encoding='utf-8').readlines()
+            ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/nolanmiller/Projects/dotfiles-modules/.ln.config'
+2026-01-15 21:32:56,690 - DEBUG - Starting install_packages.py
+2026-01-15 21:32:56,691 - DEBUG - Found config file: test.mac.config
+2026-01-15 21:32:56,691 - DEBUG - Found parent_dir /Users/nolanmiller/Projects/dotfiles-modules
+2026-01-15 21:32:56,691 - DEBUG - Set conf_os: mac
+2026-01-15 21:32:56,691 - DEBUG - Set link_conf: .ln.config
+2026-01-15 21:32:56,691 - DEBUG - Opening file: /Users/nolanmiller/Projects/dotfiles-modules/test.mac.config
+2026-01-15 21:32:56,692 - DEBUG - Handling package: test
+
+2026-01-15 21:32:56,692 - CRITICAL - Uncaught exception
+Traceback (most recent call last):
+  File "/Users/nolanmiller/Projects/dotfiles-modules/install_packages.py", line 82, in <module>
+    main()
+    ~~~~^^
+  File "/Users/nolanmiller/Projects/dotfiles-modules/install_packages.py", line 78, in main
+    link_package(package,  link_conf)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/nolanmiller/Projects/dotfiles-modules/install_packages.py", line 47, in link_package
+    links = open(pkg / link_conf, "r", encoding='utf-8').readlines()
+                 ~~~~^~~~~~~~~~~
+TypeError: unsupported operand type(s) for /: 'str' and 'str'
+2026-01-15 21:33:09,239 - DEBUG - Starting install_packages.py
+2026-01-15 21:33:09,239 - DEBUG - Found config file: test.mac.config
+2026-01-15 21:33:09,239 - DEBUG - Found parent_dir /Users/nolanmiller/Projects/dotfiles-modules
+2026-01-15 21:33:09,239 - DEBUG - Set conf_os: mac
+2026-01-15 21:33:09,239 - DEBUG - Set link_conf: .ln.config
+2026-01-15 21:33:09,239 - DEBUG - Opening file: /Users/nolanmiller/Projects/dotfiles-modules/test.mac.config
+2026-01-15 21:33:09,240 - DEBUG - Handling package: test
+
+2026-01-15 21:33:09,240 - CRITICAL - Uncaught exception
+Traceback (most recent call last):
+  File "/Users/nolanmiller/Projects/dotfiles-modules/install_packages.py", line 82, in <module>
+    main()
+    ~~~~^^
+  File "/Users/nolanmiller/Projects/dotfiles-modules/install_packages.py", line 78, in main
+    link_package(package,  link_conf)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/nolanmiller/Projects/dotfiles-modules/install_packages.py", line 47, in link_package
+    links = open(Path(pkg) / link_conf, "r", encoding='utf-8').readlines()
+            ~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'test\n/.ln.config'
+2026-01-15 21:33:52,109 - DEBUG - Starting install_packages.py
+2026-01-15 21:33:52,110 - DEBUG - Found config file: test.mac.config
+2026-01-15 21:33:52,110 - DEBUG - Found parent_dir /Users/nolanmiller/Projects/dotfiles-modules
+2026-01-15 21:33:52,110 - DEBUG - Set conf_os: mac
+2026-01-15 21:33:52,110 - DEBUG - Set link_conf: .ln.config
+2026-01-15 21:33:52,110 - DEBUG - Opening file: /Users/nolanmiller/Projects/dotfiles-modules/test.mac.config
+2026-01-15 21:33:52,110 - DEBUG - Handling package: test
+
+2026-01-15 21:33:52,111 - CRITICAL - Uncaught exception
+Traceback (most recent call last):
+  File "/Users/nolanmiller/Projects/dotfiles-modules/install_packages.py", line 84, in <module>
+    main()
+    ~~~~^^
+  File "/Users/nolanmiller/Projects/dotfiles-modules/install_packages.py", line 80, in main
+    link_package(package.strip("\n"),  link_conf)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/nolanmiller/Projects/dotfiles-modules/install_packages.py", line 50, in link_package
+    src = pkg.parent / link.split("=")[0]
+          ^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'parent'
+2026-01-15 21:35:51,708 - DEBUG - Starting install_packages.py
+2026-01-15 21:35:51,708 - DEBUG - Found config file: test.mac.config
+2026-01-15 21:35:51,708 - DEBUG - Found parent_dir /Users/nolanmiller/Projects/dotfiles-modules
+2026-01-15 21:35:51,708 - DEBUG - Set conf_os: mac
+2026-01-15 21:35:51,708 - DEBUG - Set link_conf: .ln.config
+2026-01-15 21:35:51,709 - DEBUG - Opening file: /Users/nolanmiller/Projects/dotfiles-modules/test.mac.config
+2026-01-15 21:35:51,709 - DEBUG - Handling package: test
+
+2026-01-15 21:35:51,709 - CRITICAL - Uncaught exception
+Traceback (most recent call last):
+  File "/Users/nolanmiller/Projects/dotfiles-modules/install_packages.py", line 84, in <module>
+    main()
+    ~~~~^^
+  File "/Users/nolanmiller/Projects/dotfiles-modules/install_packages.py", line 80, in main
+    link_package(package.strip("\n"),  link_conf)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/nolanmiller/Projects/dotfiles-modules/install_packages.py", line 50, in link_package
+    src = Path(pkg.parent) / link.split("=")[0]
+               ^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'parent'
+2026-01-15 21:40:38,902 - DEBUG - Starting install_packages.py
+2026-01-15 21:40:38,903 - DEBUG - Found config file: test.mac.config
+2026-01-15 21:40:38,903 - DEBUG - Found parent_dir /Users/nolanmiller/Projects/dotfiles-modules
+2026-01-15 21:40:38,903 - DEBUG - Set conf_os: mac
+2026-01-15 21:40:38,903 - DEBUG - Set link_conf: .ln.config
+2026-01-15 21:40:38,903 - DEBUG - Opening file: /Users/nolanmiller/Projects/dotfiles-modules/test.mac.config
+2026-01-15 21:40:38,903 - DEBUG - Handling package: test
+
+2026-01-15 21:40:38,903 - CRITICAL - Uncaught exception
+Traceback (most recent call last):
+  File "/Users/nolanmiller/Projects/dotfiles-modules/install_packages.py", line 84, in <module>
+    main()
+    ~~~~^^
+  File "/Users/nolanmiller/Projects/dotfiles-modules/install_packages.py", line 80, in main
+    link_package(package.strip("\n"),  link_conf)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/nolanmiller/Projects/dotfiles-modules/install_packages.py", line 51, in link_package
+    dest = pkg.parent / link.split("=")[1].strip("\n")
+           ^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'parent'
+2026-01-15 21:41:25,925 - DEBUG - Starting install_packages.py
+2026-01-15 21:41:25,926 - DEBUG - Found config file: test.mac.config
+2026-01-15 21:41:25,926 - DEBUG - Found parent_dir /Users/nolanmiller/Projects/dotfiles-modules
+2026-01-15 21:41:25,926 - DEBUG - Set conf_os: mac
+2026-01-15 21:41:25,926 - DEBUG - Set link_conf: .ln.config
+2026-01-15 21:41:25,926 - DEBUG - Opening file: /Users/nolanmiller/Projects/dotfiles-modules/test.mac.config
+2026-01-15 21:41:25,926 - DEBUG - Handling package: test
+
+2026-01-15 21:41:25,926 - CRITICAL - Uncaught exception
+Traceback (most recent call last):
+  File "/Users/nolanmiller/Projects/dotfiles-modules/install_packages.py", line 84, in <module>
+    main()
+    ~~~~^^
+  File "/Users/nolanmiller/Projects/dotfiles-modules/install_packages.py", line 80, in main
+    link_package(package.strip("\n"),  link_conf)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/nolanmiller/Projects/dotfiles-modules/install_packages.py", line 52, in link_package
+    os.symlink(src, dest)
+    ~~~~~~~~~~^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'test/test.txt' -> '$HOME/test.txt'
+2026-01-15 21:49:48,864 - DEBUG - Starting install_packages.py
+2026-01-15 21:49:48,864 - DEBUG - Found config file: test.mac.config
+2026-01-15 21:49:48,865 - DEBUG - Found parent_dir /Users/nolanmiller/Projects/dotfiles-modules
+2026-01-15 21:49:48,865 - DEBUG - Set conf_os: mac
+2026-01-15 21:49:48,865 - DEBUG - Set link_conf: .ln.config
+2026-01-15 21:49:48,865 - DEBUG - Opening file: /Users/nolanmiller/Projects/dotfiles-modules/test.mac.config
+2026-01-15 21:49:48,865 - DEBUG - Handling package: test
+
+2026-01-15 21:49:48,865 - DEBUG - Attempting to link: test/test.txt <- /Users/nolanmiller/test.txt
+2026-01-15 21:49:48,865 - CRITICAL - Uncaught exception
+Traceback (most recent call last):
+  File "/Users/nolanmiller/Projects/dotfiles-modules/install_packages.py", line 88, in <module>
+    main()
+    ~~~~^^
+  File "/Users/nolanmiller/Projects/dotfiles-modules/install_packages.py", line 84, in main
+    link_package(package.strip("\n"),  link_conf)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/nolanmiller/Projects/dotfiles-modules/install_packages.py", line 57, in link_package
+    logging.INFO('Linked: %s <- %s', src, dest)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+TypeError: 'int' object is not callable
+2026-01-15 21:52:54,799 - DEBUG - Starting install_packages.py
+2026-01-15 21:52:54,800 - DEBUG - Found config file: test.mac.config
+2026-01-15 21:52:54,800 - DEBUG - Found parent_dir /Users/nolanmiller/Projects/dotfiles-modules
+2026-01-15 21:52:54,800 - DEBUG - Set conf_os: mac
+2026-01-15 21:52:54,800 - DEBUG - Set link_conf: .ln.config
+2026-01-15 21:52:54,800 - DEBUG - Opening file: /Users/nolanmiller/Projects/dotfiles-modules/test.mac.config
+2026-01-15 21:52:54,801 - DEBUG - Handling package: test
+
+2026-01-15 21:52:54,801 - DEBUG - Attempting to link: test/test.txt <- /Users/nolanmiller/test.txt
+2026-01-15 21:52:54,801 - CRITICAL - Uncaught exception
+Traceback (most recent call last):
+  File "/Users/nolanmiller/Projects/dotfiles-modules/install_packages.py", line 88, in <module>
+    main()
+    ~~~~^^
+  File "/Users/nolanmiller/Projects/dotfiles-modules/install_packages.py", line 84, in main
+    link_package(package.strip("\n"),  link_conf)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/nolanmiller/Projects/dotfiles-modules/install_packages.py", line 56, in link_package
+    os.symlink(src, dest)
+    ~~~~~~~~~~^^^^^^^^^^^
+FileExistsError: [Errno 17] File exists: 'test/test.txt' -> '/Users/nolanmiller/test.txt'
+2026-01-15 21:57:04,007 - DEBUG - Starting install_packages.py
+2026-01-15 21:57:04,007 - DEBUG - Found config file: test.mac.config
+2026-01-15 21:57:04,007 - DEBUG - Found parent_dir /Users/nolanmiller/Projects/dotfiles-modules
+2026-01-15 21:57:04,007 - DEBUG - Set conf_os: mac
+2026-01-15 21:57:04,007 - DEBUG - Set link_conf: .ln.config
+2026-01-15 21:57:04,007 - DEBUG - Opening file: /Users/nolanmiller/Projects/dotfiles-modules/test.mac.config
+2026-01-15 21:57:04,008 - DEBUG - Handling package: test
+
+2026-01-15 21:57:04,008 - DEBUG - Attempting to link: test/test.txt <- /Users/nolanmiller/test.txt
+2026-01-15 21:57:04,008 - CRITICAL - Uncaught exception
+Traceback (most recent call last):
+  File "/Users/nolanmiller/Projects/dotfiles-modules/install_packages.py", line 95, in <module>
+    main()
+    ~~~~^^
+  File "/Users/nolanmiller/Projects/dotfiles-modules/install_packages.py", line 91, in main
+    link_package(package.strip("\n"),  link_conf)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/nolanmiller/Projects/dotfiles-modules/install_packages.py", line 63, in link_package
+    os.symlink(src, dest, target_is_directory=Path(dest).is_dir())
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileExistsError: [Errno 17] File exists: 'test/test.txt' -> '/Users/nolanmiller/test.txt'
+2026-01-15 21:59:51,422 - DEBUG - Starting install_packages.py
+2026-01-15 21:59:51,423 - DEBUG - Found config file: test.mac.config
+2026-01-15 21:59:51,423 - DEBUG - Found parent_dir /Users/nolanmiller/Projects/dotfiles-modules
+2026-01-15 21:59:51,423 - DEBUG - Set conf_os: mac
+2026-01-15 21:59:51,423 - DEBUG - Set link_conf: .ln.config
+2026-01-15 21:59:51,423 - DEBUG - Opening file: /Users/nolanmiller/Projects/dotfiles-modules/test.mac.config
+2026-01-15 21:59:51,423 - DEBUG - Handling package: test
+
+2026-01-15 21:59:51,424 - DEBUG - Attempting to link: test/test.txt <- /Users/nolanmiller/test.txt
+2026-01-15 21:59:51,424 - CRITICAL - Uncaught exception
+Traceback (most recent call last):
+  File "/Users/nolanmiller/Projects/dotfiles-modules/install_packages.py", line 96, in <module>
+    main()
+    ~~~~^^
+  File "/Users/nolanmiller/Projects/dotfiles-modules/install_packages.py", line 92, in main
+    link_package(package.strip("\n"),  link_conf)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/nolanmiller/Projects/dotfiles-modules/install_packages.py", line 64, in link_package
+    os.symlink(src, dest, target_is_directory=Path(dest).is_dir())
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileExistsError: [Errno 17] File exists: 'test/test.txt' -> '/Users/nolanmiller/test.txt'
+2026-01-15 22:01:50,124 - DEBUG - Starting install_packages.py
+2026-01-15 22:01:50,124 - DEBUG - Found config file: test.mac.config
+2026-01-15 22:01:50,124 - DEBUG - Found parent_dir /Users/nolanmiller/Projects/dotfiles-modules
+2026-01-15 22:01:50,125 - DEBUG - Set conf_os: mac
+2026-01-15 22:01:50,125 - DEBUG - Set link_conf: .ln.config
+2026-01-15 22:01:50,125 - DEBUG - Opening file: /Users/nolanmiller/Projects/dotfiles-modules/test.mac.config
+2026-01-15 22:01:50,125 - DEBUG - Handling package: test
+
+2026-01-15 22:01:50,125 - DEBUG - Attempting to link: test/test.txt <- /Users/nolanmiller/test.txt
+2026-01-15 22:01:50,125 - CRITICAL - Uncaught exception
+Traceback (most recent call last):
+  File "/Users/nolanmiller/Projects/dotfiles-modules/install_packages.py", line 96, in <module>
+    main()
+    ~~~~^^
+  File "/Users/nolanmiller/Projects/dotfiles-modules/install_packages.py", line 92, in main
+    link_package(package.strip("\n"),  link_conf)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/Users/nolanmiller/Projects/dotfiles-modules/install_packages.py", line 64, in link_package
+    os.symlink(src, dest, target_is_directory=Path(dest).is_dir())
+    ~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileExistsError: [Errno 17] File exists: 'test/test.txt' -> '/Users/nolanmiller/test.txt'
+2026-01-15 22:05:55,868 - DEBUG - Starting install_packages.py
+2026-01-15 22:05:55,868 - DEBUG - Found config file: test.mac.config
+2026-01-15 22:05:55,868 - DEBUG - Found parent_dir /Users/nolanmiller/Projects/dotfiles-modules
+2026-01-15 22:05:55,868 - DEBUG - Set conf_os: mac
+2026-01-15 22:05:55,868 - DEBUG - Set link_conf: .ln.config
+2026-01-15 22:05:55,868 - DEBUG - Opening file: /Users/nolanmiller/Projects/dotfiles-modules/test.mac.config
+2026-01-15 22:05:55,869 - DEBUG - Handling package: test
+
+2026-01-15 22:05:55,869 - DEBUG - Attempting to link: test/test.txt <- /Users/nolanmiller/test.txt
+2026-01-15 22:05:55,869 - DEBUG - Backing up /Users/nolanmiller/test.txt -> /Users/nolanmiller/test.txt.backup
+2026-01-15 22:05:55,869 - INFO - Linked: test/test.txt <- /Users/nolanmiller/test.txt
+2026-01-15 22:05:55,869 - DEBUG - Attempting to link: test/test.txt <- /Users/nolanmiller/test.txt
+2026-01-15 22:05:55,869 - DEBUG - Backing up /Users/nolanmiller/test.txt -> /Users/nolanmiller/test.txt.backup
+2026-01-15 22:05:55,870 - INFO - Linked: test/test.txt <- /Users/nolanmiller/test.txt
+2026-01-15 22:19:03,697 - DEBUG - Starting install_packages.py
+2026-01-15 22:19:03,698 - DEBUG - Found config file: test.mac.config
+2026-01-15 22:19:03,698 - DEBUG - Found parent_dir /Users/nolanmiller/Projects/dotfiles-modules
+2026-01-15 22:19:03,698 - DEBUG - Set conf_os: mac
+2026-01-15 22:19:03,698 - DEBUG - Set link_conf: .ln.config
+2026-01-15 22:19:03,698 - DEBUG - Opening file: /Users/nolanmiller/Projects/dotfiles-modules/test.mac.config
+2026-01-15 22:19:03,698 - CRITICAL - Uncaught exception
+Traceback (most recent call last):
+  File "/Users/nolanmiller/Projects/dotfiles-modules/install_packages.py", line 101, in <module>
+    main()
+    ~~~~^^
+  File "/Users/nolanmiller/Projects/dotfiles-modules/install_packages.py", line 94, in main
+    with conf_file_path.open("r", encoding="utf-8") as conf_file:
+         ~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "/usr/local/Cellar/python@3.14/3.14.0_1/Frameworks/Python.framework/Versions/3.14/lib/python3.14/pathlib/__init__.py", line 776, in open
+    return io.open(self, mode, buffering, encoding, errors, newline)
+           ~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '/Users/nolanmiller/Projects/dotfiles-modules/test.mac.config'
+2026-01-15 22:19:47,509 - DEBUG - Starting install_packages.py
+2026-01-15 22:19:47,510 - DEBUG - Found config file: .test.mac.config
+2026-01-15 22:19:47,510 - DEBUG - Found parent_dir /Users/nolanmiller/Projects/dotfiles-modules
+2026-01-15 22:19:47,510 - DEBUG - Set conf_os: mac
+2026-01-15 22:19:47,510 - DEBUG - Set link_conf: .ln.config
+2026-01-15 22:19:47,510 - DEBUG - Opening file: /Users/nolanmiller/Projects/dotfiles-modules/.test.mac.config
+2026-01-15 22:19:47,510 - DEBUG - Handling package: test
+
+2026-01-15 22:19:47,511 - DEBUG - Attempting to link: /Users/nolanmiller/Projects/dotfiles-modules/test/test.txt -> /Users/nolanmiller/test.txt
+2026-01-15 22:19:47,511 - DEBUG - Backing up /Users/nolanmiller/test.txt -> /Users/nolanmiller/test.txt.backup
+2026-01-15 22:19:47,511 - INFO - Linked: /Users/nolanmiller/Projects/dotfiles-modules/test/test.txt <- /Users/nolanmiller/test.txt
+2026-02-02 16:20:39,828 - DEBUG - Starting install_packages.py
+2026-02-02 16:20:39,830 - DEBUG - Found config file: .packages.ubu.config
+2026-02-02 16:20:39,830 - DEBUG - Found parent_dir /mnt/c/Code/dotfiles-mac
+2026-02-02 16:20:39,830 - DEBUG - Set conf_os: ubuntu
+2026-02-02 16:20:39,830 - DEBUG - Set link_conf: .ln.config
+2026-02-02 16:20:39,830 - DEBUG - Opening file: /mnt/c/Code/dotfiles-mac/.packages.ubu.config
+2026-02-02 16:20:39,832 - DEBUG - Handling package: eza
+
+2026-02-02 16:20:39,834 - DEBUG - Attempting to link: /mnt/c/Code/dotfiles-mac/eza/eza-theme.yml -> /home/nolan/.config/eza/theme.yml
+2026-02-02 16:20:39,835 - INFO - Linked: /mnt/c/Code/dotfiles-mac/eza/eza-theme.yml <- /home/nolan/.config/eza/theme.yml
+2026-02-02 16:20:39,835 - DEBUG - Handling package: nvim
+
+2026-02-02 16:20:39,838 - DEBUG - Attempting to link: /mnt/c/Code/dotfiles-mac/nvim/nvim -> /home/nolan/.config/nvim
+2026-02-02 16:20:39,839 - INFO - Linked: /mnt/c/Code/dotfiles-mac/nvim/nvim <- /home/nolan/.config/nvim
+2026-02-02 16:20:39,839 - DEBUG - Handling package: tmux
+
+2026-02-02 16:20:39,843 - CRITICAL - Uncaught exception
+Traceback (most recent call last):
+  File "/mnt/c/Code/dotfiles-mac/install_packages.py", line 106, in <module>
+    main()
+  File "/mnt/c/Code/dotfiles-mac/install_packages.py", line 102, in main
+    link_package(package.strip("\n"),  link_conf)
+  File "/mnt/c/Code/dotfiles-mac/install_packages.py", line 63, in link_package
+    dest = link.split("=")[1].strip("\n")
+           ~~~~~~~~~~~~~~~^^^
+IndexError: list index out of range
+2026-02-02 16:36:33,060 - DEBUG - Starting install_packages.py
+2026-02-02 16:36:33,060 - CRITICAL - sys.argv count == 1 expected 2
+2026-02-02 16:36:45,813 - DEBUG - Starting install_packages.py
+2026-02-02 16:36:45,815 - DEBUG - Found config file: .packages.ubu.config
+2026-02-02 16:36:45,815 - DEBUG - Found parent_dir /mnt/c/Code/dotfiles-mac
+2026-02-02 16:36:45,815 - DEBUG - Set conf_os: ubuntu
+2026-02-02 16:36:45,815 - DEBUG - Set link_conf: .ln.config
+2026-02-02 16:36:45,815 - DEBUG - Opening file: /mnt/c/Code/dotfiles-mac/.packages.ubu.config
+2026-02-02 16:36:45,817 - DEBUG - Handling package: eza
+
+2026-02-02 16:36:45,820 - DEBUG - Attempting to link: /mnt/c/Code/dotfiles-mac/eza/eza-theme.yml -> /home/nolan/.config/eza/theme.yml
+2026-02-02 16:36:45,821 - DEBUG - Backing up /home/nolan/.config/eza/theme.yml -> /home/nolan/.config/eza/theme.yml.backup
+2026-02-02 16:36:45,822 - INFO - Linked: /mnt/c/Code/dotfiles-mac/eza/eza-theme.yml <- /home/nolan/.config/eza/theme.yml
+2026-02-02 16:36:45,822 - DEBUG - Handling package: nvim
+
+2026-02-02 16:36:45,825 - DEBUG - Attempting to link: /mnt/c/Code/dotfiles-mac/nvim/nvim -> /home/nolan/.config/nvim
+2026-02-02 16:36:45,826 - DEBUG - Backing up /home/nolan/.config/nvim -> /home/nolan/.config/nvim.backup
+2026-02-02 16:36:45,826 - INFO - Linked: /mnt/c/Code/dotfiles-mac/nvim/nvim <- /home/nolan/.config/nvim
+2026-02-02 16:36:45,827 - DEBUG - Handling package: tmux
+
+2026-02-02 16:36:45,829 - CRITICAL - Uncaught exception
+Traceback (most recent call last):
+  File "/mnt/c/Code/dotfiles-mac/install_packages.py", line 122, in <module>
+    main()
+  File "/mnt/c/Code/dotfiles-mac/install_packages.py", line 118, in main
+    link_package(package.strip("\n"),  link_conf)
+  File "/mnt/c/Code/dotfiles-mac/install_packages.py", line 75, in link_package
+    construct_file(links[i + 1])
+  File "/mnt/c/Code/dotfiles-mac/install_packages.py", line 59, in construct_file
+    p for p in cfg.parent.iterdir()
+               ^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'parent'
+2026-02-02 16:46:04,406 - DEBUG - Starting install_packages.py
+2026-02-02 16:46:04,409 - DEBUG - Found config file: .packages.ubu.config
+2026-02-02 16:46:04,409 - DEBUG - Found parent_dir /mnt/c/Code/dotfiles-mac
+2026-02-02 16:46:04,409 - DEBUG - Set conf_os: ubuntu
+2026-02-02 16:46:04,409 - DEBUG - Set link_conf: .ln.config
+2026-02-02 16:46:04,409 - DEBUG - Opening file: /mnt/c/Code/dotfiles-mac/.packages.ubu.config
+2026-02-02 16:46:04,411 - DEBUG - Handling package: eza
+
+2026-02-02 16:46:04,416 - DEBUG - Attempting to link: /mnt/c/Code/dotfiles-mac/eza/eza-theme.yml -> /home/nolan/.config/eza/theme.yml
+2026-02-02 16:46:04,418 - DEBUG - Backing up /home/nolan/.config/eza/theme.yml -> /home/nolan/.config/eza/theme.yml.backup
+2026-02-02 16:46:04,419 - INFO - Linked: /mnt/c/Code/dotfiles-mac/eza/eza-theme.yml <- /home/nolan/.config/eza/theme.yml
+2026-02-02 16:46:04,419 - DEBUG - Handling package: nvim
+
+2026-02-02 16:46:04,423 - DEBUG - Attempting to link: /mnt/c/Code/dotfiles-mac/nvim/nvim -> /home/nolan/.config/nvim
+2026-02-02 16:46:04,424 - DEBUG - Backing up /home/nolan/.config/nvim -> /home/nolan/.config/nvim.backup
+2026-02-02 16:46:04,425 - INFO - Linked: /mnt/c/Code/dotfiles-mac/nvim/nvim <- /home/nolan/.config/nvim
+2026-02-02 16:46:04,425 - DEBUG - Handling package: tmux
+
+2026-02-02 16:46:04,427 - CRITICAL - Uncaught exception
+Traceback (most recent call last):
+  File "/mnt/c/Code/dotfiles-mac/install_packages.py", line 128, in <module>
+    main()
+  File "/mnt/c/Code/dotfiles-mac/install_packages.py", line 124, in main
+    link_package(package.strip("\n"),  link_conf)
+  File "/mnt/c/Code/dotfiles-mac/install_packages.py", line 79, in link_package
+    construct_file(links[i + 1])
+  File "/mnt/c/Code/dotfiles-mac/install_packages.py", line 63, in construct_file
+    p for p in cfg.parent.iterdir()
+               ^^^^^^^^^^
+AttributeError: 'str' object has no attribute 'parent'
+2026-02-02 16:46:40,774 - DEBUG - Starting install_packages.py
+2026-02-02 16:46:40,777 - DEBUG - Found config file: .packages.ubu.config
+2026-02-02 16:46:40,777 - DEBUG - Found parent_dir /mnt/c/Code/dotfiles-mac
+2026-02-02 16:46:40,777 - DEBUG - Set conf_os: ubuntu
+2026-02-02 16:46:40,777 - DEBUG - Set link_conf: .ln.config
+2026-02-02 16:46:40,777 - DEBUG - Opening file: /mnt/c/Code/dotfiles-mac/.packages.ubu.config
+2026-02-02 16:46:40,779 - DEBUG - Handling package: eza
+
+2026-02-02 16:46:40,784 - DEBUG - Attempting to link: /mnt/c/Code/dotfiles-mac/eza/eza-theme.yml -> /home/nolan/.config/eza/theme.yml
+2026-02-02 16:46:40,786 - DEBUG - Backing up /home/nolan/.config/eza/theme.yml -> /home/nolan/.config/eza/theme.yml.backup
+2026-02-02 16:46:40,788 - INFO - Linked: /mnt/c/Code/dotfiles-mac/eza/eza-theme.yml <- /home/nolan/.config/eza/theme.yml
+2026-02-02 16:46:40,788 - DEBUG - Handling package: nvim
+
+2026-02-02 16:46:40,792 - DEBUG - Attempting to link: /mnt/c/Code/dotfiles-mac/nvim/nvim -> /home/nolan/.config/nvim
+2026-02-02 16:46:40,793 - DEBUG - Backing up /home/nolan/.config/nvim -> /home/nolan/.config/nvim.backup
+2026-02-02 16:46:40,793 - INFO - Linked: /mnt/c/Code/dotfiles-mac/nvim/nvim <- /home/nolan/.config/nvim
+2026-02-02 16:46:40,793 - DEBUG - Handling package: tmux
+
+2026-02-02 16:46:40,795 - CRITICAL - Uncaught exception
+Traceback (most recent call last):
+  File "/mnt/c/Code/dotfiles-mac/install_packages.py", line 128, in <module>
+    main()
+  File "/mnt/c/Code/dotfiles-mac/install_packages.py", line 124, in main
+    link_package(package.strip("\n"),  link_conf)
+  File "/mnt/c/Code/dotfiles-mac/install_packages.py", line 79, in link_package
+    construct_file(Path(links[i + 1]))
+  File "/mnt/c/Code/dotfiles-mac/install_packages.py", line 62, in construct_file
+    sources = [
+              ^
+  File "/usr/lib/python3.12/pathlib.py", line 1058, in iterdir
+    for name in os.listdir(self):
+                ^^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: '.tmux.conf=$HOME'
+2026-02-02 16:48:38,319 - DEBUG - Starting install_packages.py
+2026-02-02 16:48:38,321 - DEBUG - Found config file: .packages.ubu.config
+2026-02-02 16:48:38,321 - DEBUG - Found parent_dir /mnt/c/Code/dotfiles-mac
+2026-02-02 16:48:38,321 - DEBUG - Set conf_os: ubuntu
+2026-02-02 16:48:38,321 - DEBUG - Set link_conf: .ln.config
+2026-02-02 16:48:38,322 - DEBUG - Opening file: /mnt/c/Code/dotfiles-mac/.packages.ubu.config
+2026-02-02 16:48:38,323 - DEBUG - Handling package: eza
+
+2026-02-02 16:48:38,328 - DEBUG - Attempting to link: /mnt/c/Code/dotfiles-mac/eza/eza-theme.yml -> /home/nolan/.config/eza/theme.yml
+2026-02-02 16:48:38,330 - DEBUG - Backing up /home/nolan/.config/eza/theme.yml -> /home/nolan/.config/eza/theme.yml.backup
+2026-02-02 16:48:38,331 - INFO - Linked: /mnt/c/Code/dotfiles-mac/eza/eza-theme.yml <- /home/nolan/.config/eza/theme.yml
+2026-02-02 16:48:38,331 - DEBUG - Handling package: nvim
+
+2026-02-02 16:48:38,335 - DEBUG - Attempting to link: /mnt/c/Code/dotfiles-mac/nvim/nvim -> /home/nolan/.config/nvim
+2026-02-02 16:48:38,336 - DEBUG - Backing up /home/nolan/.config/nvim -> /home/nolan/.config/nvim.backup
+2026-02-02 16:48:38,337 - INFO - Linked: /mnt/c/Code/dotfiles-mac/nvim/nvim <- /home/nolan/.config/nvim
+2026-02-02 16:48:38,337 - DEBUG - Handling package: tmux
+
+2026-02-02 16:48:38,351 - DEBUG - Attempting to link: /mnt/c/Code/dotfiles-mac/tmux/.tmux.conf -> /home/nolan/.tmux.conf
+2026-02-02 16:48:38,351 - INFO - Linked: /mnt/c/Code/dotfiles-mac/tmux/.tmux.conf <- /home/nolan/.tmux.conf
+2026-02-02 16:48:38,352 - DEBUG - Handling package: zsh
+
+2026-02-02 16:48:38,355 - DEBUG - Attempting to link: /mnt/c/Code/dotfiles-mac/zsh/.zprofile -> /home/nolan/.zprofile
+2026-02-02 16:48:38,355 - INFO - Linked: /mnt/c/Code/dotfiles-mac/zsh/.zprofile <- /home/nolan/.zprofile
+2026-02-02 16:48:38,357 - DEBUG - Attempting to link: /mnt/c/Code/dotfiles-mac/zsh/.zshrc -> /home/nolan/.zshrc
+2026-02-02 16:48:38,358 - INFO - Linked: /mnt/c/Code/dotfiles-mac/zsh/.zshrc <- /home/nolan/.zshrc
+2026-02-02 16:48:38,359 - DEBUG - Attempting to link: /mnt/c/Code/dotfiles-mac/zsh/.zshenv -> /home/nolan/.zshenv
+2026-02-02 16:48:38,360 - INFO - Linked: /mnt/c/Code/dotfiles-mac/zsh/.zshenv <- /home/nolan/.zshenv
+2026-02-02 16:55:00,712 - DEBUG - Starting install_packages.py
+2026-02-02 16:55:00,714 - DEBUG - Found config file: .packages.ubu.config
+2026-02-02 16:55:00,714 - DEBUG - Found parent_dir /mnt/c/Code/dotfiles-mac
+2026-02-02 16:55:00,714 - DEBUG - Set conf_os: ubuntu
+2026-02-02 16:55:00,714 - DEBUG - Set link_conf: .ln.config
+2026-02-02 16:55:00,714 - DEBUG - Opening file: /mnt/c/Code/dotfiles-mac/.packages.ubu.config
+2026-02-02 16:55:00,716 - DEBUG - Handling package: eza
+
+2026-02-02 16:55:00,719 - DEBUG - Attempting to link: /mnt/c/Code/dotfiles-mac/eza/eza-theme.yml -> /home/nolan/.config/eza/theme.yml
+2026-02-02 16:55:00,721 - DEBUG - Backing up /home/nolan/.config/eza/theme.yml -> /home/nolan/.config/eza/theme.yml.backup
+2026-02-02 16:55:00,722 - INFO - Linked: /mnt/c/Code/dotfiles-mac/eza/eza-theme.yml <- /home/nolan/.config/eza/theme.yml
+2026-02-02 16:55:00,722 - DEBUG - Handling package: nvim
+
+2026-02-02 16:55:00,724 - DEBUG - Attempting to link: /mnt/c/Code/dotfiles-mac/nvim/nvim -> /home/nolan/.config/nvim
+2026-02-02 16:55:00,726 - DEBUG - Backing up /home/nolan/.config/nvim -> /home/nolan/.config/nvim.backup
+2026-02-02 16:55:00,727 - INFO - Linked: /mnt/c/Code/dotfiles-mac/nvim/nvim <- /home/nolan/.config/nvim
+2026-02-02 16:55:00,727 - DEBUG - Handling package: tmux
+
+2026-02-02 16:55:00,744 - DEBUG - Attempting to link: /mnt/c/Code/dotfiles-mac/tmux/.tmux.conf -> /home/nolan/.tmux.conf
+2026-02-02 16:55:00,745 - DEBUG - Backing up /home/nolan/.tmux.conf -> /home/nolan/.tmux.conf.backup
+2026-02-02 16:55:00,746 - INFO - Linked: /mnt/c/Code/dotfiles-mac/tmux/.tmux.conf <- /home/nolan/.tmux.conf
+2026-02-02 16:55:00,746 - DEBUG - Handling package: zsh
+
+2026-02-02 16:55:00,748 - DEBUG - Attempting to link: /mnt/c/Code/dotfiles-mac/zsh/.zprofile -> /home/nolan/.zprofile
+2026-02-02 16:55:00,749 - DEBUG - Backing up /home/nolan/.zprofile -> /home/nolan/.zprofile.backup
+2026-02-02 16:55:00,750 - INFO - Linked: /mnt/c/Code/dotfiles-mac/zsh/.zprofile <- /home/nolan/.zprofile
+2026-02-02 16:55:00,752 - DEBUG - Attempting to link: /mnt/c/Code/dotfiles-mac/zsh/.zshrc -> /home/nolan/.zshrc
+2026-02-02 16:55:00,753 - DEBUG - Backing up /home/nolan/.zshrc -> /home/nolan/.zshrc.backup
+2026-02-02 16:55:00,754 - INFO - Linked: /mnt/c/Code/dotfiles-mac/zsh/.zshrc <- /home/nolan/.zshrc
+2026-02-02 16:55:00,755 - DEBUG - Attempting to link: /mnt/c/Code/dotfiles-mac/zsh/.zshenv -> /home/nolan/.zshenv
+2026-02-02 16:55:00,756 - DEBUG - Backing up /home/nolan/.zshenv -> /home/nolan/.zshenv.backup
+2026-02-02 16:55:00,757 - INFO - Linked: /mnt/c/Code/dotfiles-mac/zsh/.zshenv <- /home/nolan/.zshenv
+2026-02-02 16:57:13,915 - DEBUG - Starting install_packages.py
+2026-02-02 16:57:13,916 - DEBUG - Found config file: .packages.ubu.config
+2026-02-02 16:57:13,916 - DEBUG - Found parent_dir /mnt/c/Code/dotfiles-mac
+2026-02-02 16:57:13,916 - DEBUG - Set conf_os: ubuntu
+2026-02-02 16:57:13,917 - DEBUG - Set link_conf: .ln.config
+2026-02-02 16:57:13,917 - DEBUG - Opening file: /mnt/c/Code/dotfiles-mac/.packages.ubu.config
+2026-02-02 16:57:13,918 - DEBUG - Handling package: eza
+
+2026-02-02 16:57:13,921 - DEBUG - Attempting to link: /mnt/c/Code/dotfiles-mac/eza/eza-theme.yml -> /root/.config/eza/theme.yml
+2026-02-02 16:57:13,923 - INFO - Linked: /mnt/c/Code/dotfiles-mac/eza/eza-theme.yml <- /root/.config/eza/theme.yml
+2026-02-02 16:57:13,923 - DEBUG - Handling package: nvim
+
+2026-02-02 16:57:13,926 - DEBUG - Attempting to link: /mnt/c/Code/dotfiles-mac/nvim/nvim -> /root/.config/nvim
+2026-02-02 16:57:13,927 - INFO - Linked: /mnt/c/Code/dotfiles-mac/nvim/nvim <- /root/.config/nvim
+2026-02-02 16:57:13,927 - DEBUG - Handling package: tmux
+
+2026-02-02 16:57:13,941 - DEBUG - Attempting to link: /mnt/c/Code/dotfiles-mac/tmux/.tmux.conf -> /root/.tmux.conf
+2026-02-02 16:57:13,941 - INFO - Linked: /mnt/c/Code/dotfiles-mac/tmux/.tmux.conf <- /root/.tmux.conf
+2026-02-02 16:57:13,941 - DEBUG - Handling package: zsh
+
+2026-02-02 16:57:13,944 - DEBUG - Attempting to link: /mnt/c/Code/dotfiles-mac/zsh/.zprofile -> /root/.zprofile
+2026-02-02 16:57:13,946 - INFO - Linked: /mnt/c/Code/dotfiles-mac/zsh/.zprofile <- /root/.zprofile
+2026-02-02 16:57:13,947 - DEBUG - Attempting to link: /mnt/c/Code/dotfiles-mac/zsh/.zshrc -> /root/.zshrc
+2026-02-02 16:57:13,948 - INFO - Linked: /mnt/c/Code/dotfiles-mac/zsh/.zshrc <- /root/.zshrc
+2026-02-02 16:57:13,949 - DEBUG - Attempting to link: /mnt/c/Code/dotfiles-mac/zsh/.zshenv -> /root/.zshenv
+2026-02-02 16:57:13,949 - INFO - Linked: /mnt/c/Code/dotfiles-mac/zsh/.zshenv <- /root/.zshenv
