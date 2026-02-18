@@ -1,5 +1,5 @@
-# Enviroment Vairables
-$env:DOTFILES = "C:\Code\dotfiles"
+# Enviroment Variables
+# DOTFILES is set in PowerShell_profile.ps1
 
 # Quick Navigation
 function pdf { Set-Location "C:\Repos\Github" }

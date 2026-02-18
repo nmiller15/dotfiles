@@ -1,1 +1,2 @@
-C:/Code/dotfiles/ahk/caps-remap.ahk
+#SingleInstance Force
+Capslock::Esc
