@@ -153,6 +153,15 @@ vim.api.nvim_create_autocmd('BufWritePre', {
     vim.lsp.buf.format()
   end,
 })
+
+-- [[ Create cshtml and razor association for TS ]]
+vim.filetype.add {
+  extension = {
+    razor = 'razor',
+    cshtml = 'razor',
+  },
+}
+
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
@@ -631,6 +640,27 @@ require('lazy').setup({
         clangd = {},
         -- gopls = {},
         pylsp = {},
+        postgres_lsp = {},
+        -- roslyn = {
+        --   on_attach = function()
+        --     print 'roslyn LSP attached'
+        --   end,
+        --   filetypes = { 'cs', 'cshtml' },
+        --   settings = {
+        --     ['csharp|inlay_hints'] = {
+        --       csharp_enable_inlay_hints_for_implicit_object_creation = true,
+        --       csharp_enable_inlay_hints_for_implicit_variable_types = true,
+        --     },
+        --     ['csharp|background_analysis'] = {
+        --       dotnet_analyzer_diagnostics_scope = 'fullSolution',
+        --       dotnet_compiler_diagnostics_scope = 'fullSolution',
+        --     },
+        --     ['csharp|code_lens'] = {
+        --       dotnet_enable_references_code_lens = true,
+        --       dotnet_enable_tests_code_lens = true,
+        --     },
+        --   },
+        -- },
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -640,23 +670,23 @@ require('lazy').setup({
         -- But for many setups, the LSP (`ts_ls`) will work just fine
         -- ts_ls = {},
         --
-        csharp_ls = {
-          settings = {
-            inlayHints = {
-              enableForTypes = true,
-              enableForImplicitVariableTypes = true,
-              enableForLambdaParameterTypes = true,
-              enableForImplicitObjectCreation = true,
-            },
-            codeLens = {
-              enableReferences = true,
-            },
-            completion = {
-              showItemsFromUnimportedNamespaces = true,
-              showNameSuggestions = true,
-            },
-          },
-        },
+        -- csharp_ls = {
+        --   settings = {
+        --     inlayHints = {
+        --       enableForTypes = true,
+        --       enableForImplicitVariableTypes = true,
+        --       enableForLambdaParameterTypes = true,
+        --       enableForImplicitObjectCreation = true,
+        --     },
+        --     codeLens = {
+        --       enableReferences = true,
+        --     },
+        --     completion = {
+        --       showItemsFromUnimportedNamespaces = true,
+        --       showNameSuggestions = true,
+        --     },
+        --   },
+        -- },
         tailwindcss = {
           -- cmd = { ... }, -- You can override the command used to start the server
           filetypes = { 'html', 'javascript', 'typescript', 'javascriptreact', 'typescriptreact', 'vue', 'svelte' },
@@ -946,6 +976,24 @@ require('lazy').setup({
       signature = { enabled = true },
     },
   },
+  {
+    'seblyng/roslyn.nvim',
+    ---@module 'roslyn.config'
+    ---@type RoslynNvimConfig
+    -- ft = { 'cs', 'razor', 'cshtml' },
+    init = function()
+      vim.filetype.add {
+        extension = {
+          razor = 'razor',
+          cshtml = 'razor',
+        },
+      }
+    end,
+    opts = {
+      use_razor = true,
+      -- your configuration comes here; leave empty for default settings
+    },
+  },
 
   { -- You can easily change to a different colorscheme.
     -- Change the name of the colorscheme plugin below, and then
@@ -1021,6 +1069,7 @@ require('lazy').setup({
       auto_install = true,
       highlight = {
         enable = true,
+        filetypes = { 'razor', 'cshtml' },
         -- Some languages depend on vim's regex highlighting system (such as Ruby) for indent rules.
         --  If you are experiencing weird indenting issues, add the language to
         --  the list of additional_vim_regex_highlighting and disabled languages for indent.

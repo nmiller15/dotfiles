@@ -6,7 +6,7 @@ default < alt - 2 : yabai_launch 2 Safari
 default < alt - 3 : yabai_launch 3 Obsidian
 default < alt - 4 : yabai_launch 4 "Visual Studio Code"
 default < alt - 5 : yabai_launch 5 "Postico 2"
-default < alt - 6 : yabai_launch 6 Messages
+default < alt - 6 : yabai_launch 6 Discord
 default < alt - 7 : yabai_launch 7 Spark
 default < alt - 8 : yabai_launch 8 Spotify
 default < alt - 9 : yabai_launch 9 Finder
