@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+
+selected=$(find ~/Projects "~/Documents/1 - Projects/" -mindepth 1 -maxdepth 1 -type d | fzf --preview "ls {}") || return
+
+if [[ -z $selected ]]; then
+    exit 0
+fi
+
+cd $selected
