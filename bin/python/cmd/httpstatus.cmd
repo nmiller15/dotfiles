@@ -1,2 +1,2 @@
 @echo off
-python "%~dp0httpstatus.py" %*
+python "%~dp0../httpstatus.py" %*

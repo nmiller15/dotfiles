@@ -1,2 +1,2 @@
 @echo off
-python "%~dp0cpx.py" %*
+python "%~dp0../cpx.py" %*

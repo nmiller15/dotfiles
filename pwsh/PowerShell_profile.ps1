@@ -1,13 +1,16 @@
-# Set DOTFILES to the repository root (parent of pwsh folder)
-$script:root = Split-Path -Parent $MyInvocation.MyCommand.Path
-$env:DOTFILES = Split-Path -Parent $script:root
+$env:DOTFILES = "C:\Code\dotfiles-v2"
+$MODULES = "c:\Code\dotfiles-v2\pwsh"
 
-Get-ChildItem -Path $DOTFILES/pwsh -Filter '*.ps1' | Sort-Object Name | ForEach-Object {
+Get-ChildItem -Path $MODULES -Filter '*.ps1' | Sort-Object Name | ForEach-Object {
     $ps1_sw = [System.Diagnostics.Stopwatch]::StartNew()
-    . $_.FullName
+    if ($_.Name -ne "PowerShell_profile.ps1")
+    {
+        . ($_.FullName)
+    }
     $elapsed = "{0:N3}s" -f $ps1_sw.Elapsed.TotalSeconds
-    
-    if ($env:BOOTSTRAP) {
+        
+    if ($env:BOOTSTRAP)
+    {
         Write-Host "Sourced $_ in $elapsed"
     }
 }
@@ -20,6 +23,7 @@ Get-ChildItem -Path $DOTFILES/pwsh -Filter '*.ps1' | Sort-Object Name | ForEach-
 # for `choco` will not function.
 # See https://ch0.co/tab-completion for details.
 $ChocolateyProfile = "$env:ChocolateyInstall\helpers\chocolateyProfile.psm1"
-if (Test-Path($ChocolateyProfile)) {
-  Import-Module "$ChocolateyProfile"
+if (Test-Path($ChocolateyProfile))
+{
+    Import-Module "$ChocolateyProfile"
 }

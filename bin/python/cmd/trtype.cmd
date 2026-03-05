@@ -1,2 +1,2 @@
 @echo off
-python "%~dp0trtype.py" %*
+python "%~dp0../trtype.py" %*

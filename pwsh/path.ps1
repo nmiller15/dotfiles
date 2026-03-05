@@ -1,4 +1,7 @@
 $env:PATH = "$env:PATH;$env:DOTFILES\bin"
+$env:PATH = "$env:PATH;$env:DOTFILES\bin\pwsh"
+$env:PATH = "$env:PATH;$env:DOTFILES\bin\python"
+$env:PATH = "$env:PATH;$env:DOTFILES\bin\python\cmd"
 $env:PATH = "$env:PATH;C:\Users\NMiller\AppData\Local\Microsoft\WindowsApps"
 $env:PATH = "$env:PATH;C:\Users\NMiller\AppData\Local\Microsoft\WinGet\Links"
 $env:PATH = "$env:PATH;C:\Program Files\ripgrep"

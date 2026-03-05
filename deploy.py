@@ -6,6 +6,7 @@ import os
 import platform
 import shutil
 import sys
+import subprocess
 from datetime import datetime
 from pathlib import Path
 from typing import Optional
@@ -36,8 +37,16 @@ def expand_path(path_str: str) -> Path:
     """Expand ~, $HOME, %USERPROFILE%, and %APPDATA% in path string."""
     path_str = path_str.replace("~", str(Path.home()))
     path_str = path_str.replace("$HOME", str(Path.home()))
-    path_str = path_str.replace("%USERPROFILE%", os.environ.get("USERPROFILE", str(Path.home())))
-    path_str = path_str.replace("%APPDATA%", os.environ.get("APPDATA", str(Path.home() / "AppData" / "Roaming")))
+    path_str = path_str.replace(
+        "%USERPROFILE%", os.environ.get("USERPROFILE", str(Path.home())))
+    path_str = path_str.replace("%APPDATA%", os.environ.get(
+        "APPDATA", str(Path.home() / "AppData" / "Roaming")))
+    profile_path = subprocess.run(
+        ["powershell", "-NoProfile", "-Command", "$PROFILE"],
+        capture_output=True,
+        text=True
+    ).stdout.strip()
+    path_str = path_str.replace("$PROFILE", profile_path)
     return Path(path_str)
 
 
@@ -89,19 +98,21 @@ def create_symlink(source: Path, destination: Path, dry_run: bool) -> None:
     system = platform.system().lower()
 
     if system == "windows":
-        import subprocess
-
-        is_dir = source.is_dir()
-        cmd = ["mklink"]
-        if is_dir:
-            cmd.append("/D")
-        cmd.extend([str(destination), str(source)])
+        # is_dir = source.is_dir()
+        cmd = [
+            "powershell",
+            "-Command",
+            "New-Item -ItemType SymbolicLink -Path "
+            + f"\"{destination}\" -Target \"{source}\" -Force | Out-Null"
+        ]
 
         try:
-            subprocess.run(cmd, check=True, shell=True, capture_output=True, text=True)
-            logging.info("Windows symlink created: %s -> %s", destination, source)
+            subprocess.run(cmd, check=True, capture_output=True, text=True)
+            logging.info(
+                "Windows symlink created via PowerShell: %s -> %s", destination, source)
         except subprocess.CalledProcessError as e:
-            error_msg = f"mklink failed for {destination} -> {source}: {e.stderr}"
+            error_msg = f"PowerShell New-Item failed for {
+                destination} -> {source}: {e.stderr}"
             logging.error(error_msg)
             raise OSError(error_msg)
     else:
@@ -162,7 +173,8 @@ def construct_file(
                 out.write(content)
                 if i < len(source_files) - 1:
                     out.write("\n")
-        logging.info("Constructed: %s from %d files", output_path, len(source_files))
+        logging.info("Constructed: %s from %d files",
+                     output_path, len(source_files))
     except OSError as e:
         return (f"Failed to write {output_path}: {e}", source_files)
 
@@ -188,7 +200,8 @@ def process_package(package_name: str, os_name: str, repo_root: Path, dry_run: b
         if line.startswith("#constructed"):
             recipe = line[len("#constructed"):].strip()
             if "->" not in recipe:
-                logging.warning("Invalid #constructed line (missing '->'): %s", line)
+                logging.warning(
+                    "Invalid #constructed line (missing '->'): %s", line)
                 failures.append((line, "Invalid format - missing '->'"))
                 continue
 
@@ -196,14 +209,16 @@ def process_package(package_name: str, os_name: str, repo_root: Path, dry_run: b
             source_dir = source_dir.strip()
             output_filename = output_filename.strip()
 
-            logging.debug("Constructing %s from directory %s", output_filename, source_dir)
+            logging.debug("Constructing %s from directory %s",
+                          output_filename, source_dir)
 
             error, source_files = construct_file(
                 Path(source_dir), output_filename, repo_root, dry_run
             )
             if error:
                 failures.append((line, error))
-                logging.error("Failed to construct %s: %s", output_filename, error)
+                logging.error("Failed to construct %s: %s",
+                              output_filename, error)
             else:
                 constructed_outputs[output_filename] = source_dir
 
@@ -233,15 +248,19 @@ def process_package(package_name: str, os_name: str, repo_root: Path, dry_run: b
             create_symlink(source_path, dest_path, dry_run)
         except Exception as e:
             failures.append((f"{source_rel}={dest_str}", str(e)))
-            logging.error("Failed to link %s -> %s: %s", source_path, dest_path, e)
+            logging.error("Failed to link %s -> %s: %s",
+                          source_path, dest_path, e)
 
     return failures
 
 
-def create_dotfiles_env(repo_root: Path, dry_run: bool) -> None:
+def create_dotfiles_env(repo_root: Path, current_os: str, dry_run: bool) -> None:
     """Create .dotfiles.env with the DOTFILES path."""
     env_file = repo_root / ".dotfiles.env"
-    env_content = f'export DOTFILES="{repo_root}"\n'
+    if current_os == "win":
+        env_content = f'set DOTFILES="{repo_root}"\n'
+    else:
+        env_content = f'export DOTFILES="{repo_root}"\n'
 
     if dry_run:
         logging.info("[DRY-RUN] Would create: %s", env_file)
@@ -289,15 +308,17 @@ def main() -> None:
     logging.info("Dry run: %s", args.dry_run)
 
     if not args.skip_env:
-        create_dotfiles_env(repo_root, args.dry_run)
+        create_dotfiles_env(repo_root, current_os, args.dry_run)
 
     if not packages_config.exists():
         logging.error("Packages config not found: %s", packages_config)
-        print(f"Error: Packages config not found: {packages_config}", file=sys.stderr)
+        print(f"Error: Packages config not found: {
+              packages_config}", file=sys.stderr)
         sys.exit(1)
 
     with packages_config.open("r", encoding="utf-8") as f:
-        packages = [line.strip() for line in f if line.strip() and not line.startswith("#")]
+        packages = [line.strip() for line in f if line.strip()
+                    and not line.startswith("#")]
 
     logging.info("Packages to deploy: %s", ", ".join(packages))
 
@@ -306,14 +327,17 @@ def main() -> None:
     for package in packages:
         package_path = repo_root / package
         if not package_path.exists():
-            logging.warning("Package directory not found: %s (skipping)", package_path)
+            logging.warning(
+                "Package directory not found: %s (skipping)", package_path)
             continue
 
         logging.info("Processing package: %s", package)
-        failures = process_package(package, current_os, repo_root, args.dry_run)
+        failures = process_package(
+            package, current_os, repo_root, args.dry_run)
         if failures:
             all_failures.extend([(package, src, err) for src, err in failures])
-            logging.error("Package '%s' had %d failure(s)", package, len(failures))
+            logging.error("Package '%s' had %d failure(s)",
+                          package, len(failures))
         else:
             logging.info("Package '%s' deployed successfully", package)
 

@@ -1,2 +1,2 @@
 @echo off
-python "%~dp0sysexits.py" %*
+python "%~dp0../sysexits.py" %*

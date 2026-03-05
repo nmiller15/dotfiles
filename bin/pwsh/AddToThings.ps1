@@ -7,7 +7,7 @@ $apiKeyRegex="^$envKey=(.+)$"
 $urlKey= [regex]::Escape("ADD_TO_THINGS_MOSAIC_URL")
 $urlKeyRegex="^$urlKey=(.+)$"
 
-$envPath="C:\Code\dotfiles\bin\.env"
+$envPath="$env:DOTFILES\bin\.env"
 
 Get-Content $envPath | ForEach-Object {
     if ($_.Trim() -match $apiKeyRegex)
