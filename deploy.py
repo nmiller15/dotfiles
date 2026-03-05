@@ -41,12 +41,14 @@ def expand_path(path_str: str) -> Path:
         "%USERPROFILE%", os.environ.get("USERPROFILE", str(Path.home())))
     path_str = path_str.replace("%APPDATA%", os.environ.get(
         "APPDATA", str(Path.home() / "AppData" / "Roaming")))
-    profile_path = subprocess.run(
-        ["powershell", "-NoProfile", "-Command", "$PROFILE"],
-        capture_output=True,
-        text=True
-    ).stdout.strip()
-    path_str = path_str.replace("$PROFILE", profile_path)
+    if (get_current_os() == "win") and "$PROFILE" in path_str:
+        profile_path = subprocess.run(
+            ["powershell", "-NoProfile", "-Command", "$PROFILE"],
+            capture_output=True,
+            text=True
+        ).stdout.strip()
+        path_str = path_str.replace("$PROFILE", profile_path)
+
     return Path(path_str)
 
 
@@ -111,8 +113,7 @@ def create_symlink(source: Path, destination: Path, dry_run: bool) -> None:
             logging.info(
                 "Windows symlink created via PowerShell: %s -> %s", destination, source)
         except subprocess.CalledProcessError as e:
-            error_msg = f"PowerShell New-Item failed for {
-                destination} -> {source}: {e.stderr}"
+            error_msg = f"PowerShell New-Item failed for {destination} -> {source}: {e.stderr}"
             logging.error(error_msg)
             raise OSError(error_msg)
     else:
@@ -312,8 +313,9 @@ def main() -> None:
 
     if not packages_config.exists():
         logging.error("Packages config not found: %s", packages_config)
-        print(f"Error: Packages config not found: {
-              packages_config}", file=sys.stderr)
+        print(
+            f"Error: Packages config not found: {packages_config}",
+            file=sys.stderr)
         sys.exit(1)
 
     with packages_config.open("r", encoding="utf-8") as f:
