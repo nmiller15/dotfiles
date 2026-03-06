@@ -1,24 +1,54 @@
 # Reload Config
-function reload { . "$env:DOTFILES\bootstrap.ps1" }
+function reload
+{
+    $sw = [System.Diagnostics.Stopwatch]::StartNew()
+    python.exe "$env:DOTFILES/deploy.py"
+    Write-Host "Installing tools..."
+    try
+    {
+        & "$env:DOTFILES/bin/pwsh/install_tools.ps1"
+        Write-Host "Tools installed successfully."
+    } catch
+    {
+        Write-Host "Failed to install tools: $_"
+    }
+    Write-Host "Sourcing config files..."
+    $env:BOOTSTRAP = "true";
+    . $PROFILE
 
-function install_if_missing {
+    Write-Host "Reloading services..."
+    & "$HOME\OneDrive - CAB\Documents\AutoHotkey\caps-remap.ahk"
+    & "$HOME\OneDrive - CAB\Documents\AutoHotkey\add-to-things.ahk"
+
+    Remove-Item Env:BOOTSTRAP
+
+    $elapsed = "{0:N3}s" -f $sw.Elapsed.TotalSeconds
+    Write-Host "Config bootstrapped in $elapsed"
+}
+
+function install_if_missing
+{
     param (
         [string]$packageName,
         [string]$installCommand
     )
 
-    if (-not (Get-Command $packageName -ErrorAction SilentlyContinue)) {
+    if (-not (Get-Command $packageName -ErrorAction SilentlyContinue))
+    {
         Write-Host "Installing $packageName..."
         Invoke-Expression $installCommand
-    } else {
+    } else
+    {
         Write-Host "$packageName is already installed."
     }
 }
 
-function twig {
+function twig
+{
     & "c:\Code\twig\bin\Debug\net9.0\twig.exe" @args
 }
 
-function pulse {
+function pulse
+{
     & "c:\Code\pulse\bin\Debug\net9.0\pulse.exe" @args
 }

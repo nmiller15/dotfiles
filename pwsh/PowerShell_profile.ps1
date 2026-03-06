@@ -1,5 +1,5 @@
 $env:DOTFILES = "C:\Code\dotfiles-v2"
-$MODULES = "c:\Code\dotfiles-v2\pwsh"
+$MODULES = "$env:DOTFILES\pwsh"
 
 Get-ChildItem -Path $MODULES -Filter '*.ps1' | Sort-Object Name | ForEach-Object {
     $ps1_sw = [System.Diagnostics.Stopwatch]::StartNew()

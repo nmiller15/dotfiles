@@ -113,7 +113,8 @@ def create_symlink(source: Path, destination: Path, dry_run: bool) -> None:
             logging.info(
                 "Windows symlink created via PowerShell: %s -> %s", destination, source)
         except subprocess.CalledProcessError as e:
-            error_msg = f"PowerShell New-Item failed for {destination} -> {source}: {e.stderr}"
+            error_msg = f"PowerShell New-Item failed for {
+                destination} -> {source}: {e.stderr}"
             logging.error(error_msg)
             raise OSError(error_msg)
     else:
@@ -259,7 +260,7 @@ def create_dotfiles_env(repo_root: Path, current_os: str, dry_run: bool) -> None
     """Create .dotfiles.env with the DOTFILES path."""
     env_file = repo_root / ".dotfiles.env"
     if current_os == "win":
-        env_content = f'set DOTFILES="{repo_root}"\n'
+        env_content = f'$env:DOTFILES="{repo_root}"\n'
     else:
         env_content = f'export DOTFILES="{repo_root}"\n'
 
