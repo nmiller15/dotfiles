@@ -297,6 +297,7 @@ def main() -> None:
     log_level = logging.DEBUG if args.verbose else logging.INFO
     logging.basicConfig(
         level=log_level,
+        stream=sys.stdout,
         format="%(levelname)s: %(message)s",
     )
 

@@ -1,8 +1,17 @@
 # Reload Config
 function reload
 {
+    param (
+        [bool]$deploy
+    )
+
+    Write-Host "Linking config files..."
     $sw = [System.Diagnostics.Stopwatch]::StartNew()
-    python.exe "$env:DOTFILES/deploy.py"
+    if ($deploy)
+    {
+        & python3 -u "$env:DOTFILES/deploy.py" | Foreach-Object { Write-Host $_ }
+    }
+
     Write-Host "Installing tools..."
     try
     {
