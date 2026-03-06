@@ -113,8 +113,7 @@ def create_symlink(source: Path, destination: Path, dry_run: bool) -> None:
             logging.info(
                 "Windows symlink created via PowerShell: %s -> %s", destination, source)
         except subprocess.CalledProcessError as e:
-            error_msg = f"PowerShell New-Item failed for {
-                destination} -> {source}: {e.stderr}"
+            error_msg = f"PowerShell New-Item failed for {destination} -> {source}: {e.stderr}"
             logging.error(error_msg)
             raise OSError(error_msg)
     else:

@@ -8,11 +8,17 @@ zle -N zle_sf; bindkey '^E' zle_sf
 
 function zle_reload {
     zle -I
-    python $DOTFILES/deploy.py
+    if [[ $1 == true ]]; then
+        python $DOTFILES/deploy.py
+    fi
     . reload.mac.sh
     zle reset-prompt
-
 }
 
-zle -N zle_reload; bindkey '^R' zle_reload
+function zle_reload_deploy { 
+    zle_reload true
+}
+
+zle -N zle_reload; bindkey '^A' zle_reload
+zle -N zle_reload_deploy; bindkey '^B' zle_reload_deploy
 
