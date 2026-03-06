@@ -1,3 +1,4 @@
 **/.env
 **/.venv/
 **/keys.json
+**/.dotfiles.env
