@@ -16,8 +16,8 @@ alias gc='git commit -m'
 alias ga='git add .'
 
 # util
-alias reload=". ~/Projects/dotfiles/bootstrap.zsh"
 alias python=python3
+alias tempe='cd "$(mktemp -d)"'
 
 # Env variables
 export ASDF_DATA_DIR="/your/custom/data/dir"

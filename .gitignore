@@ -2,3 +2,5 @@
 **/.venv/
 **/keys.json
 .dotfiles.env
+.DS_Store
+**/.DS_Store

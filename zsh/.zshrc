@@ -5,6 +5,7 @@ HISTFILE=~/.zsh_history
 
 # Profile options
 set -o vi # vim keybindings
+export EDITOR='nvim'
 
 for FILE in $DOTFILES/zsh/*.sh; do
     if [[ "$MODE" == "bootstrap" ]]; then
