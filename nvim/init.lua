@@ -831,6 +831,11 @@ require('lazy').setup({
       },
     },
   },
+  {
+    'johmsalas/text-case.nvim',
+    event = 'VimEnter',
+    opts = {},
+  },
   { -- C# Boilerplate
     'DestopLine/boilersharp.nvim',
     event = 'BufWritePre',
