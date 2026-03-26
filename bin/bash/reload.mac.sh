@@ -8,6 +8,7 @@ echo "Installing tools..."
 eval "$DOTFILES/bin/bash/tools.sh"
 
 echo "Restarting services..."
+aerospace reload-config
 # brew services restart sketchybar
-yabai --restart-service
-skhd --restart-service 
+# yabai --restart-service
+# skhd --restart-service 

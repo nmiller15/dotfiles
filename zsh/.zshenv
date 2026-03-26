@@ -9,10 +9,12 @@ export PATH="/Users/nolanmiller/.local/bin:$PATH"
 # autoload ${fpath[1]}/*(:t)
 #
 function yabai_launch() {
-    echo "yabai_launch"
     local space="$1"
     local appName="$2"
+    local appExec="$3"
 
-    /opt/homebrew/bin/yabai -m space --focus "$space"
-    open -a $appName
+    yabai -m space --focus $space
+    if ! pgrep -x "$appName" >/dev/null; then
+        open -a "$appExec"
+    fi
 }
