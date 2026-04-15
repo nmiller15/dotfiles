@@ -1,0 +1,9 @@
+#!/usr/bin/env zsh
+
+selected=$(git ls-files | fzf --preview "bat --color=always --style=numbers {}") || return
+
+if [[ -z $selected ]]; then
+    exit 0
+fi
+
+git blame "$selected" | less
