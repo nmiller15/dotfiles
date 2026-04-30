@@ -1,9 +1,34 @@
 #!/usr/bin/env zsh
 
-selected=$(find ~/Projects "~/Documents/1 - Projects/" -mindepth 1 -maxdepth 1 -type d | fzf --preview "ls {}") || return
+HISTORY_FILE="$HOME/.sf_history"
+HISTORY_LIMIT=15
 
-if [[ -z $selected ]]; then
-    exit 0
+# Read and clean history (filter non-existent dirs, write cleaned list back)
+history_dirs=()
+if [[ -f "$HISTORY_FILE" ]]; then
+    while IFS= read -r line; do
+        [[ -d "$line" ]] && history_dirs+=("$line")
+    done < "$HISTORY_FILE"
+    printf '%s\n' "${history_dirs[@]}" >| "$HISTORY_FILE"
 fi
 
-cd $selected
+# Build full dir list, excluding history entries to avoid duplicates
+all_dirs=$(find ~/Projects ~/Documents/1\ -\ Projects/ -mindepth 1 -maxdepth 1 -type d 2>/dev/null)
+if [[ ${#history_dirs[@]} -gt 0 ]]; then
+    filtered_dirs=$(printf '%s\n' "$all_dirs" | grep -vxF "$(printf '%s\n' "${history_dirs[@]}")")
+else
+    filtered_dirs="$all_dirs"
+fi
+
+# Combine: history first, then the rest
+combined=$(printf '%s\n' "${history_dirs[@]}"; printf '%s\n' "$filtered_dirs")
+
+selected=$(printf '%s\n' "$combined" | fzf --preview "ls {}") || return
+
+[[ -z "$selected" ]] && exit 0
+
+# Update history: prepend selection, dedup, cap at limit
+new_history=$(printf '%s\n' "$selected" "${history_dirs[@]}" | awk '!seen[$0]++' | head -n "$HISTORY_LIMIT")
+printf '%s\n' "$new_history" >| "$HISTORY_FILE"
+
+cd "$selected"
