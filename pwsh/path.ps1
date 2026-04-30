@@ -19,6 +19,6 @@ $env:PATH = "$env:PATH;C:\Program Files\LLVM\bin"
 $env:PATH = "$env:PATH;C:\Program Files\roslyn"
 $env:PATH = "$env:PATH;C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Tools\MSVC\14.29.30133\bin\Hostx86\x86"
 $env:PATH = "$env:PATH;C:\Users\NMiller\AppData\Local\GitHubDesktop\app-3.5.4\resources\app\git\usr\bin"
-
+$env:PATH = "$env:PATH;C:\Users\NMiller\AppData\Local\Python\bin"
 
 # $env:PATH = "$env:PATH;C:\Users\NMiller\bin"

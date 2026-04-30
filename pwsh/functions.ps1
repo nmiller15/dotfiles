@@ -27,7 +27,7 @@ function reload
 
     Write-Host "Reloading services..."
     & "$HOME\OneDrive - CAB\Documents\AutoHotkey\caps-remap.ahk"
-    & "$HOME\OneDrive - CAB\Documents\AutoHotkey\add-to-things.ahk"
+    & "$HOME\OneDrive - CAB\Documents\AutoHotkey\quick-capture.ahk"
 
     Remove-Item Env:BOOTSTRAP
 
