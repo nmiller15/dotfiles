@@ -13,5 +13,4 @@ install_if_missing just "winget install --id Casey.Just --exact"
 install_if_missing jj "winget install jj-vcs.jj"
 install_if_missing matter "irm https://cli.getmatter.com/install.ps1 | iex"
 install_if_missing sed "winget install sed"
-
-
+install_if_missing tree-sitter "winget install -e --id tree-sitter.tree-sitter-cli"
