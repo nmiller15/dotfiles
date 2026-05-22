@@ -394,6 +394,7 @@ $building = $true
 $buildFailed = $false
 $errorLines = @()
 $outputBuffer = @()
+$lastOutputLength = 0
 
 # Set up the process
 $psi = New-Object System.Diagnostics.ProcessStartInfo
@@ -415,6 +416,33 @@ $outputHandler = {
     if (-not [String]::IsNullOrEmpty($EventArgs.Data))
     {
         $Event.MessageData.AppendLine($EventArgs.Data)
+    }
+}
+
+function Write-NewOutput
+{
+    param(
+        [System.Text.StringBuilder]$Builder,
+        [ref]$LastLength
+    )
+    
+    $currentContent = $Builder.ToString()
+    $currentLength = $currentContent.Length
+    
+    if ($currentLength -gt $LastLength.Value)
+    {
+        $newContent = $currentContent.Substring($LastLength.Value)
+        $lines = $newContent -split "`r?`n"
+        
+        foreach ($line in $lines)
+        {
+            if (-not [string]::IsNullOrWhiteSpace($line))
+            {
+                Write-Host "  $line"
+            }
+        }
+        
+        $LastLength.Value = $currentLength
     }
 }
 
@@ -469,22 +497,14 @@ try
             Write-Host "`r  $green✓$reset Starting $cyan$projectName$reset...    "
             Write-Host ""
             
-            # Output the buffered content that indicates the app is running
-            $lines = $currentOutput -split "`r?`n"
-            foreach ($line in $lines)
-            {
-                if ($line -match 'Now listening on:' -or 
-                    $line -match 'Content root path:' -or 
-                    $line -match 'Application started' -or
-                    $line -match 'Hosting environment:' -or
-                    $line -match 'https?://')
-                {
-                    Write-Host "  $cyan▶$reset $($line.Trim())"
-                }
-            }
-            
-            # Clear the builder so we don't re-process
-            $outputBuilder.Clear() | Out-Null
+            # Stream all buffered output so far
+            Write-NewOutput -Builder $outputBuilder -LastLength ([ref]$lastOutputLength)
+        }
+        
+        # Stream new output once build is complete
+        if (-not $building)
+        {
+            Write-NewOutput -Builder $outputBuilder -LastLength ([ref]$lastOutputLength)
         }
     }
 
@@ -514,13 +534,16 @@ try
     elseif ($building)
     {
         # Process exited but we never detected "running" state - might be a console app
-        Write-Host "`r  $green✓$reset Starting $cyan$projectName$reset...    "
+        Write-Host "`r  $green✓$reset Completed $cyan$projectName$reset...    "
         Write-Host ""
         
-        if ($remainingOutput)
-        {
-            Write-Host $remainingOutput
-        }
+        # Stream all output from the console app
+        Write-NewOutput -Builder $outputBuilder -LastLength ([ref]$lastOutputLength)
+    }
+    else
+    {
+        # Flush any remaining output for web apps
+        Write-NewOutput -Builder $outputBuilder -LastLength ([ref]$lastOutputLength)
     }
 
     $exitCode = $process.ExitCode

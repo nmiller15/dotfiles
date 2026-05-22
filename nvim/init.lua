@@ -641,58 +641,6 @@ require('lazy').setup({
         -- gopls = {},
         pylsp = {},
         postgres_lsp = {},
-        -- roslyn = {
-        --   on_attach = function()
-        --     print 'Roslyn LSP attached!'
-        --   end,
-        --   cmd = (function()
-        --     if vim.fn.has 'win32' == 1 then
-        --       return {
-        --         'dotnet',
-        --         'C:/Program Files/roslyn/Microsoft.CodeAnalysis.LanguageServer.dll',
-        --         '--log-level=Information',
-        --         '--stdio',
-        --       }
-        --     end
-        --
-        --     return { 'roslyn' }
-        --   end)(),
-        --   settings = {
-        --     ['csharp|background_analysis'] = {
-        --       dotnet_analyzer_diagnostics_scope = 'fullSollution',
-        --       dotnet_compiler_diagnostics_scope = 'fullSollution',
-        --     },
-        --     ['charp|code_lens'] = {
-        --       dotnet_enable_references_code_lens = true,
-        --       dotnet_enable_tests_code_lens = true,
-        --     },
-        --     ['csharp|completion'] = {
-        --       dotnet_provide_regex_completions = true,
-        --       dotnet_show_completion_items_from_unimported_namespaces = true,
-        --       dotnet_show_name_completion_suggestions = true,
-        --     },
-        --     ['csharp|inlay_hints'] = {
-        --       csharp_enable_inlay_hints_for_implicit_object_creation = true,
-        --       csharp_enable_inlay_hints_for_implicit_variable_types = true,
-        --       csharp_enable_inlay_hints_for_lambda_parameter_types = true,
-        --       csharp_enable_inlay_hints_for_types = true,
-        --       csharp_enable_inlay_hints_for_indexer_parameters = true,
-        --       csharp_enable_inlay_hints_for_literal_parameters = true,
-        --       dotnet_enable_inlay_hints_for_object_creation_parameters = true,
-        --       dotnet_enable_inlay_hints_for_other_parameters = true,
-        --       dotnet_enable_inlay_hints_for_parameters = true,
-        --       dotnet_suppress_inlay_hints_for_parameters_that_differ_only_by_suffix = true,
-        --       dotnet_suppress_inlay_hints_for_parameters_that_match_argument_name = true,
-        --       dotnet_suppress_inlay_hints_for_parameters_that_match_method_intent = true,
-        --     },
-        --     ['csharp|symbol_search'] = {
-        --       dotnet_search_reference_assemblies = true,
-        --     },
-        --     ['csharp|formatting'] = {
-        --       dotnet_organize_imports_on_format = true,
-        --     },
-        --   },
-        -- },
         -- rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
@@ -702,23 +650,6 @@ require('lazy').setup({
         -- But for many setups, the LSP (`ts_ls`) will work just fine
         -- ts_ls = {},
         --
-        -- csharp_ls = {
-        --   settings = {
-        --     inlayHints = {
-        --       enableForTypes = true,
-        --       enableForImplicitVariableTypes = true,
-        --       enableForLambdaParameterTypes = true,
-        --       enableForImplicitObjectCreation = true,
-        --     },
-        --     codeLens = {
-        --       enableReferences = true,
-        --     },
-        --     completion = {
-        --       showItemsFromUnimportedNamespaces = true,
-        --       showNameSuggestions = true,
-        --     },
-        --   },
-        -- },
         tailwindcss = {
           -- cmd = { ... }, -- You can override the command used to start the server
           filetypes = { 'html', 'javascript', 'typescript', 'javascriptreact', 'typescriptreact', 'vue', 'svelte' },
@@ -1013,58 +944,12 @@ require('lazy').setup({
       signature = { enabled = true },
     },
   },
+
   {
     'seblyng/roslyn.nvim',
     ---@module 'roslyn.config'
     ---@type RoslynNvimConfig
-    -- ft = { 'cs', 'razor', 'cshtml' },
-    init = function()
-      vim.filetype.add {
-        extension = {
-          razor = 'razor',
-          cshtml = 'razor',
-        },
-      }
-    end,
-    settings = {
-      ['csharp|background_analysis'] = {
-        dotnet_analyzer_diagnostics_scope = 'fullSollution',
-        dotnet_compiler_diagnostics_scope = 'fullSollution',
-      },
-      ['charp|code_lens'] = {
-        dotnet_enable_references_code_lens = true,
-        dotnet_enable_tests_code_lens = true,
-      },
-      ['csharp|completion'] = {
-        dotnet_provide_regex_completions = true,
-        dotnet_show_completion_items_from_unimported_namespaces = true,
-        dotnet_show_name_completion_suggestions = true,
-      },
-      ['csharp|inlay_hints'] = {
-        csharp_enable_inlay_hints_for_implicit_object_creation = true,
-        csharp_enable_inlay_hints_for_implicit_variable_types = true,
-        csharp_enable_inlay_hints_for_lambda_parameter_types = true,
-        csharp_enable_inlay_hints_for_types = true,
-        csharp_enable_inlay_hints_for_indexer_parameters = true,
-        csharp_enable_inlay_hints_for_literal_parameters = true,
-        dotnet_enable_inlay_hints_for_object_creation_parameters = true,
-        dotnet_enable_inlay_hints_for_other_parameters = true,
-        dotnet_enable_inlay_hints_for_parameters = true,
-        dotnet_suppress_inlay_hints_for_parameters_that_differ_only_by_suffix = true,
-        dotnet_suppress_inlay_hints_for_parameters_that_match_argument_name = true,
-        dotnet_suppress_inlay_hints_for_parameters_that_match_method_intent = true,
-      },
-      ['csharp|symbol_search'] = {
-        dotnet_search_reference_assemblies = true,
-      },
-      ['csharp|formatting'] = {
-        dotnet_organize_imports_on_format = true,
-      },
-    },
-    opts = {
-      use_razor = true,
-      -- your configuration comes here; leave empty for default settings
-    },
+    opts = {},
   },
 
   { -- You can easily change to a different colorscheme.
@@ -1132,8 +1017,9 @@ require('lazy').setup({
   },
   { -- Highlight, edit, and navigate code
     'nvim-treesitter/nvim-treesitter',
+    branch = 'main',
     build = ':TSUpdate',
-    main = 'nvim-treesitter.configs', -- Sets main module to use for opts
+    main = 'nvim-treesitter.config', -- Sets main module to use for opts
     -- [[ Configure Treesitter ]] See `:help nvim-treesitter`
     opts = {
       ensure_installed = { 'bash', 'c', 'c_sharp', 'diff', 'html', 'json', 'lua', 'luadoc', 'markdown', 'markdown_inline', 'query', 'razor', 'vim', 'vimdoc' },
