@@ -1,10 +1,21 @@
 . ~/Projects/dotfiles/shell/functions.sh
 
-install_if_missing fzf "brew installl fzf" 
+install_if_missing fzf "brew install fzf" 
 install_if_missing wget "brew install wget"
-install_if_missing jq "brew installl jq" 
+install_if_missing jq "brew install jq" 
 install_if_missing node "brew install node"
 install_if_missing npm "brew install npm"
+if ! brew list --formula zsh-autosuggestions >/dev/null 2>&1; then
+    brew install zsh-autosuggestions
+else
+    echo "zsh-autosuggestions is already installed."
+fi
+
+if ! brew list --formula zsh-syntax-highlighting >/dev/null 2>&1; then
+    brew install zsh-syntax-highlighting
+else
+    echo "zsh-syntax-highlighting is already installed."
+fi
 # install_if_missing yabai "brew install koekeishiya/formulae/yabai && yabai --start-service"
 # install_if_missing sketchybar "brew install FelixKratz/formulae/sketchybar"
 # install_if_missing skhd "brew install koekeishiya/formulae/skhd && skhd --start-service"
