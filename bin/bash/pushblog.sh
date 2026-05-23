@@ -6,7 +6,7 @@ ATTACHMENTS_DIR="/Users/nolanmiller/Vault/attachments"
 S3_BUCKET_NAME="nolanmiller-image-hosting"
 HUGO_SITE_DIR="/Users/nolanmiller/Projects/breaking-changes"
 SCRIPTS="/Users/nolanmiller/Projects/dotfiles/bin"
-PYTHON_EXE="$SCRIPTS/.venv/bin/python"
+PYTHON_EXE="$SCRIPTS/python/.venv/bin/python"
 CONTENT="$HUGO_SITE_DIR/content/posts"
 CURRENT_PATH="$(pwd)"
 
