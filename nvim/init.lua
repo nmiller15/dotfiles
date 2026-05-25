@@ -1022,10 +1022,8 @@ require('lazy').setup({
   {
     'nvim-treesitter/nvim-treesitter',
     build = ':TSUpdate',
-    config = function()
-      require('nvim-treesitter').setup {}
-      -- Install parsers (runs async, no-op if already installed)
-      require('nvim-treesitter').install {
+    opts = {
+      ensure_installed = {
         'bash',
         'c',
         'c_sharp',
@@ -1040,7 +1038,20 @@ require('lazy').setup({
         'razor',
         'vim',
         'vimdoc',
-      }
+      },
+      auto_install = true,
+      highlight = {
+        enable = true,
+        additional_vim_regex_highlighting = { 'ruby' },
+      },
+      indent = {
+        enable = true,
+        disable = { 'ruby' },
+      },
+    },
+
+    config = function(_, opts)
+      require('nvim-treesitter').setup(opts)
     end,
   },
 
