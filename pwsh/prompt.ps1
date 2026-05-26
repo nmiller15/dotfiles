@@ -10,14 +10,19 @@ function prompt
         }
     }
 
-    Write-Host "$env:USERNAME@$env:COMPUTERNAME " -ForegroundColor DarkMagenta -NoNewline   # purple accent
-    Write-Host " $PWD" -ForegroundColor DarkGray -NoNewline                                   # muted gray
+    # Rose Pine Moon colors
+    $love = "`e[38;5;217m"    # rose pine moon love
+    $pine = "`e[38;5;108m"    # rose pine moon pine
+    $muted = "`e[38;5;103m"   # rose pine moon muted
+    $reset = "`e[0m"
+
+    Write-Host "${love}$env:USERNAME@$env:COMPUTERNAME ${muted} $PWD" -NoNewline
     if ($git)
     {
-        Write-Host $git -ForegroundColor Green -NoNewline                               # softer warm tone
+        Write-Host "${pine}$git" -NoNewline
     }
 
-    Write-Host ""
-    Write-Host "▶" -ForegroundColor DarkGray -NoNewline
+    Write-Host "${reset}"
+    Write-Host "${muted}▶${reset}" -NoNewline
     return " "
 }
