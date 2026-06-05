@@ -90,11 +90,7 @@ param(
 
     [Parameter()]
     [Alias("np")]
-    [switch]$NoPull,
-
-    [Parameter()]
-    [Alias("v")]
-    [switch]$VerboseOutput
+    [switch]$NoPull
 )
 
 $ErrorActionPreference = 'Stop'
@@ -122,7 +118,6 @@ $script:green = "`e[32m"
 $script:red = "`e[31m"
 $script:reset = "`e[0m"
 
-$script:spinnerFrames = @('⠋', '⠙', '⠹', '⠸', '⠼', '⠴', '⠦', '⠧', '⠇', '⠏')
 
 function Show-Info
 {
@@ -380,189 +375,7 @@ Show-Info "Worktree:   $gray$treeName$reset"
 Show-Info "Project:    $gray$projectName$reset"
 Write-Host ""
 
-if ($VerboseOutput)
-{
-    Show-Success "Starting $cyan$projectName$reset..."
-    Write-Host ""
-    dotnet run --project $selectedProject.FullName
-    exit $LASTEXITCODE
-}
-
-# Quiet mode: show spinner during build, then pass through output once running
-$frameIndex = 0
-$building = $true
-$buildFailed = $false
-$errorLines = @()
-$outputBuffer = @()
-$lastOutputLength = 0
-
-# Set up the process
-$psi = New-Object System.Diagnostics.ProcessStartInfo
-$psi.FileName = "dotnet"
-$psi.Arguments = "run --project `"$($selectedProject.FullName)`""
-$psi.RedirectStandardOutput = $true
-$psi.RedirectStandardError = $true
-$psi.UseShellExecute = $false
-$psi.CreateNoWindow = $true
-
-$process = New-Object System.Diagnostics.Process
-$process.StartInfo = $psi
-
-# Set up async output reading
-$outputBuilder = New-Object System.Text.StringBuilder
-$errorBuilder = New-Object System.Text.StringBuilder
-
-$outputHandler = {
-    if (-not [String]::IsNullOrEmpty($EventArgs.Data))
-    {
-        $Event.MessageData.AppendLine($EventArgs.Data)
-    }
-}
-
-function Write-NewOutput
-{
-    param(
-        [System.Text.StringBuilder]$Builder,
-        [ref]$LastLength
-    )
-    
-    $currentContent = $Builder.ToString()
-    $currentLength = $currentContent.Length
-    
-    if ($currentLength -gt $LastLength.Value)
-    {
-        $newContent = $currentContent.Substring($LastLength.Value)
-        $lines = $newContent -split "`r?`n"
-        
-        foreach ($line in $lines)
-        {
-            if (-not [string]::IsNullOrWhiteSpace($line))
-            {
-                Write-Host "  $line"
-            }
-        }
-        
-        $LastLength.Value = $currentLength
-    }
-}
-
-$outputEvent = Register-ObjectEvent -InputObject $process -EventName OutputDataReceived -Action $outputHandler -MessageData $outputBuilder
-$errorEvent = Register-ObjectEvent -InputObject $process -EventName ErrorDataReceived -Action $outputHandler -MessageData $errorBuilder
-
-# Handle Ctrl+C to stop the child process
-$null = Register-EngineEvent -SourceIdentifier PowerShell.Exiting -Action {
-    if ($process -and -not $process.HasExited)
-    {
-        $process.Kill()
-    }
-}
-
-try
-{
-    $process.Start() | Out-Null
-    $process.BeginOutputReadLine()
-    $process.BeginErrorReadLine()
-
-    # Spinner loop
-    Write-Host "  $($spinnerFrames[$frameIndex]) ${gray}Building...$reset" -NoNewline
-
-    while (-not $process.HasExited)
-    {
-        Start-Sleep -Milliseconds 80
-        
-        # Update spinner
-        if ($building)
-        {
-            $frameIndex = ($frameIndex + 1) % $spinnerFrames.Count
-            Write-Host "`r  $($spinnerFrames[$frameIndex]) ${gray}Building...$reset" -NoNewline
-        }
-        
-        # Check for output
-        $currentOutput = $outputBuilder.ToString()
-        $currentError = $errorBuilder.ToString()
-        
-        # Check for errors
-        if ($currentOutput -match 'error CS' -or $currentOutput -match 'Build FAILED' -or 
-            $currentError -match 'error CS' -or $currentError -match 'Build FAILED')
-        {
-            $buildFailed = $true
-        }
-        
-        # Check if app is now running (build succeeded)
-        if ($building -and ($currentOutput -match 'Now listening on:' -or 
-                            $currentOutput -match 'Content root path:' -or
-                            $currentOutput -match 'Application started'))
-        {
-            $building = $false
-            Write-Host "`r  $green✓$reset Starting $cyan$projectName$reset...    "
-            Write-Host ""
-            
-            # Stream all buffered output so far
-            Write-NewOutput -Builder $outputBuilder -LastLength ([ref]$lastOutputLength)
-        }
-        
-        # Stream new output once build is complete
-        if (-not $building)
-        {
-            Write-NewOutput -Builder $outputBuilder -LastLength ([ref]$lastOutputLength)
-        }
-    }
-
-    # Wait for async reads to complete
-    $process.WaitForExit()
-
-    # Get any remaining output
-    $remainingOutput = $outputBuilder.ToString()
-    $remainingError = $errorBuilder.ToString()
-
-    if ($buildFailed -or $process.ExitCode -ne 0)
-    {
-        Write-Host "`r  $red✗$reset ${red}Build failed$reset              "
-        Write-Host ""
-        
-        # Show error lines
-        $allOutput = $remainingOutput + "`n" + $remainingError
-        $lines = $allOutput -split "`r?`n"
-        foreach ($line in $lines)
-        {
-            if ($line -match 'error CS' -or $line -match 'Build FAILED')
-            {
-                Write-Host $line
-            }
-        }
-    }
-    elseif ($building)
-    {
-        # Process exited but we never detected "running" state - might be a console app
-        Write-Host "`r  $green✓$reset Completed $cyan$projectName$reset...    "
-        Write-Host ""
-        
-        # Stream all output from the console app
-        Write-NewOutput -Builder $outputBuilder -LastLength ([ref]$lastOutputLength)
-    }
-    else
-    {
-        # Flush any remaining output for web apps
-        Write-NewOutput -Builder $outputBuilder -LastLength ([ref]$lastOutputLength)
-    }
-
-    $exitCode = $process.ExitCode
-}
-finally
-{
-    # Clean up: stop the process if still running
-    if ($process -and -not $process.HasExited)
-    {
-        $process.Kill()
-        $process.WaitForExit()
-    }
-    
-    # Unregister events
-    if ($outputEvent) { Unregister-Event -SourceIdentifier $outputEvent.Name -ErrorAction SilentlyContinue }
-    if ($errorEvent) { Unregister-Event -SourceIdentifier $errorEvent.Name -ErrorAction SilentlyContinue }
-    
-    # Dispose process
-    if ($process) { $process.Dispose() }
-}
-
-exit $exitCode
+Show-Success "Starting $cyan$projectName$reset..."
+Write-Host ""
+dotnet run --project $selectedProject.FullName
+exit $LASTEXITCODE
