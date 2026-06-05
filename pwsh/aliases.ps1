@@ -12,6 +12,7 @@ Set-Alias df dff
 function ppdf { Set-Location "C:\Code" }
 Set-Alias ppd ppdf
 
+function udf { Set-Location $HOME }
 Set-Alias ud udf
 
 function ncf { Set-Location "C:\Users\NMiller\AppData\Local\nvim\" }

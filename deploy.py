@@ -235,11 +235,7 @@ def process_package(package_name: str, os_name: str, repo_root: Path, dry_run: b
         source_rel = source_rel.strip()
         dest_str = dest_str.strip()
 
-        if source_rel in constructed_outputs:
-            logging.debug("Using constructed file for: %s", source_rel)
-            source_path = (repo_root / source_rel).resolve()
-        else:
-            source_path = (repo_root / source_rel).resolve()
+        source_path = (repo_root / source_rel).resolve()
 
         dest_path = expand_path(dest_str)
 

@@ -1,4 +1,4 @@
-. ~/Projects/dotfiles/shell/functions.sh
+. $DOTFILES/zsh/functions.sh
 
 install_if_missing fzf "brew install fzf" 
 install_if_missing wget "brew install wget"

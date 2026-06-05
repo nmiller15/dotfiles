@@ -1,4 +1,7 @@
-$env:DOTFILES = "C:\Code\dotfiles-v2"
+# Derive DOTFILES from this script's location, resolving the symlink if present
+$item = Get-Item -LiteralPath $PSCommandPath -ErrorAction SilentlyContinue
+$actual = if ($item -and $item.LinkType) { $item.Target } else { $PSCommandPath }
+$env:DOTFILES = Split-Path (Split-Path $actual -Parent) -Parent
 $MODULES = "$env:DOTFILES\pwsh"
 
 Get-ChildItem -Path $MODULES -Filter '*.ps1' | Sort-Object Name | ForEach-Object {

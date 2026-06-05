@@ -19,8 +19,6 @@ for FILE in $DOTFILES/zsh/*.sh; do
     fi
 done
 
-fpath+=($HOME/Projects/dotfiles/lib)
-
 # Removed because it takes too long to load
 # export NVM_DIR="$HOME/.nvm"
 # [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm

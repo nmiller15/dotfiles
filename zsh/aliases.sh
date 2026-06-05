@@ -7,7 +7,7 @@ alias vim='nvim'
 alias pd='cd ~/Projects/'
 alias ud='cd ~'
 alias nc='cd ~/.config/nvim'
-alias df='cd ~/Projects/dotfiles/'
+alias df='cd $DOTFILES'
 
 # git
 alias gs='git status'
