@@ -90,7 +90,10 @@ param(
 
     [Parameter()]
     [Alias("np")]
-    [switch]$NoPull
+    [switch]$NoPull,
+
+    [Parameter(ValueFromRemainingArguments)]
+    [string[]]$PassthroughArgs
 )
 
 $ErrorActionPreference = 'Stop'
@@ -377,5 +380,12 @@ Write-Host ""
 
 Show-Success "Starting $cyan$projectName$reset..."
 Write-Host ""
-dotnet run --project $selectedProject.FullName
+if ($PassthroughArgs.Count -gt 0)
+{
+    dotnet run --project $selectedProject.FullName -- @PassthroughArgs
+}
+else
+{
+    dotnet run --project $selectedProject.FullName
+}
 exit $LASTEXITCODE
