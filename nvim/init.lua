@@ -766,7 +766,7 @@ require('lazy').setup({
         -- python = { "isort", "black" },
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
-        javascript = { 'prettier', stop_after_first = true },
+        -- javascript = { 'prettier', stop_after_first = true },
       },
     },
   },
@@ -806,17 +806,17 @@ require('lazy').setup({
       },
     },
   }, -- lazy.nvim
-  {
-    'prettier/vim-prettier',
-    build = 'npm install',
-    ft = { 'javascript', 'typescript', 'css', 'html', 'json', 'markdown', 'yaml' },
-    init = function()
-      vim.g['prettier#autoformat'] = 1
-      vim.g['prettier#tab_width'] = 4
-      vim.g['prettier#use_tabs'] = false
-      vim.g['prettier#exec_cmd_path'] = 'prettier --tab-width=4 --use-tabs=false'
-    end,
-  },
+  -- {
+  --   'prettier/vim-prettier',
+  --   build = 'npm install',
+  --   ft = { 'javascript', 'typescript', 'css', 'html', 'json', 'markdown', 'yaml' },
+  --   init = function()
+  --     vim.g['prettier#autoformat'] = 1
+  --     vim.g['prettier#tab_width'] = 4
+  --     vim.g['prettier#use_tabs'] = false
+  --     vim.g['prettier#exec_cmd_path'] = 'prettier --tab-width=4 --use-tabs=false'
+  --   end,
+  -- },
   { -- Github Copilot
     'zbirenbaum/copilot.lua',
     event = 'InsertEnter',
