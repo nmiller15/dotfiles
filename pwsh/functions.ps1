@@ -61,3 +61,10 @@ function pulse
 {
     & "c:\Code\pulse\bin\Debug\net9.0\pulse.exe" @args
 }
+
+function backup
+{
+    param($file)
+
+    Copy-Item $file "$file.bak"
+}
