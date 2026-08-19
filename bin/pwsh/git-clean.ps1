@@ -126,8 +126,29 @@ foreach ($line in $worktreeList)
     }
 }
 
-# Get current git user email for authorship filtering
+# Scan filesystem for orphaned directories (subdirs not tracked by any worktree)
+$protectedNames = @("main", "master", "beta")
+$worktreePathSet = [System.Collections.Generic.HashSet[string]]::new(
+    [System.StringComparer]::OrdinalIgnoreCase
+)
+foreach ($p in $worktrees.Values) { $worktreePathSet.Add($p) | Out-Null }
+
+$orphanedDirs = Get-ChildItem -Directory |
+    Where-Object {
+        $_.Name -notin $protectedNames -and
+        -not $worktreePathSet.Contains($_.FullName)
+    } |
+    ForEach-Object {
+        [PSCustomObject]@{
+            Name         = $_.Name
+            FullPath     = $_.FullName
+            IsOrphanDir  = $true
+        }
+    }
+
+# Get current git user info for authorship filtering
 $currentUserEmail = (git config user.email 2>$null).Trim()
+$currentUserName  = (git config user.name  2>$null).Trim()
 
 # Get all local branches except main/master/beta
 $branches = git branch --no-column --format='%(refname:short)|%(upstream:short)' |
@@ -169,7 +190,11 @@ if ($IncludeRemote)
             $logOutput = git log -1 --format="%ci|%ae|%an|%s" $refName 2>$null
             if (-not $logOutput) { Write-Verbose "Skipping remote '$name': no log output"; return }
             $logParts = $logOutput -split '\|', 4
-            if (-not $AllAuthors -and $logParts[1].Trim() -ne $currentUserEmail) { Write-Verbose "Skipping remote '$name': author '$($logParts[1].Trim())' != '$currentUserEmail'"; return }
+            if (-not $AllAuthors)
+            {
+                $authoredCommit = git log --author=$currentUserName --oneline $refName 2>$null
+                if (-not $authoredCommit) { Write-Verbose "Skipping remote '$name': no commits by '$currentUserName'"; return }
+            }
             [PSCustomObject]@{
                 Name          = $name
                 Upstream      = $refName
@@ -189,15 +214,42 @@ $allBranches = (@($branches) + @($remoteOnlyBranches)) |
     Where-Object { $_ } |
     Sort-Object Date
 
-if (-not $allBranches -or $allBranches.Count -eq 0)
+if ((-not $allBranches -or $allBranches.Count -eq 0) -and (-not $orphanedDirs -or @($orphanedDirs).Count -eq 0))
 {
     Write-Host ""
-    Write-Host "  ${gray}No branches to clean.$reset"
+    Write-Host "  ${gray}No branches or directories to clean.$reset"
     Write-Host ""
     Set-Location $startingDir
     exit 0
 }
 
+# ── Orphaned directory prompts ────────────────────────────────────────────────
+foreach ($orphan in $orphanedDirs)
+{
+    Write-Host ""
+    Write-Host "  ${gray}┌$reset $cyan$($orphan.Name)$reset"
+    Write-Host "  ${gray}│ Orphaned directory (not linked to a worktree)$reset"
+    Write-Host "  ${gray}│ Path: $($orphan.FullPath)$reset"
+    Write-Host -NoNewline "  ${gray}└$reset Delete? ${gray}[y/N]:$reset "
+
+    $response = Read-Host
+    if ($response -match '^(y|yes)$')
+    {
+        Show-Step "Removing orphaned directory"
+        cmd /c rmdir /s /q "`"\\?\$($orphan.FullPath)`"" 2>$null
+        if ($LASTEXITCODE -ne 0)
+        {
+            Show-Failure "Failed to remove directory: $($orphan.FullPath)"
+        }
+        else
+        {
+            git worktree prune 2>$null | Out-Null
+            Show-Success "Directory removed and worktree refs pruned"
+        }
+    }
+}
+
+# ── Branch prompts ────────────────────────────────────────────────────────────
 foreach ($branchInfo in $allBranches)
 {
     $branch = $branchInfo.Name
@@ -244,13 +296,15 @@ foreach ($branchInfo in $allBranches)
         {
             Show-Step "Removing worktree"
             git worktree remove --force $worktreePath 2>$null | Out-Null
-            
-            # If directory still exists, remove it manually
-            if (Test-Path $worktreePath)
+            cmd /c rmdir /s /q "`"\\?\$worktreePath`"" 2>$null
+            if ($LASTEXITCODE -ne 0)
             {
-                Remove-Item -Path $worktreePath -Recurse -Force -ErrorAction SilentlyContinue
+                Show-Failure "Failed to remove worktree directory: $worktreePath"
             }
-            Show-Success "Worktree removed"
+            else
+            {
+                Show-Success "Worktree removed"
+            }
         }
 
         Show-Step "Deleting branch"
