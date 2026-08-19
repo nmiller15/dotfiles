@@ -62,6 +62,23 @@ function pulse
     & "c:\Code\pulse\bin\Debug\net9.0\pulse.exe" @args
 }
 
+function rtfm
+{
+    tldr @args
+    if ($?)
+    { return 
+    }
+
+    Get-Help @args -ErrorAction Ignore
+    if ($?)
+    {
+        Get-Help @args
+        return
+    }
+
+    Start-Process "https://www.google.com/search?q=$query"
+}
+
 function backup
 {
     param($file)
