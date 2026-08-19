@@ -32,3 +32,7 @@ if (Test-Path($ChocolateyProfile))
 {
     Import-Module "$ChocolateyProfile"
 }
+
+# Set output encodign to UTF-8 to avoid issues with non-ASCII characters in the console
+$OutputEncoding = [System.Text.UTF8Encoding]::new()
+[Console]::OutputEncoding = [System.Text.UTF8Encoding]::new()
