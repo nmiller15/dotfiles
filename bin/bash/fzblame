@@ -6,4 +6,4 @@ if [[ -z $selected ]]; then
     exit 0
 fi
 
-git blame "$selected" | less
+git blame "$selected" --date=short | bat --language=log
