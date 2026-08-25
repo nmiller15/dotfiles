@@ -13,7 +13,7 @@ if [[ -f "$HISTORY_FILE" ]]; then
 fi
 
 # Build full dir list, excluding history entries to avoid duplicates
-all_dirs=$(find ~/Projects ~/Documents/1\ -\ Projects/ -mindepth 1 -maxdepth 1 -type d 2>/dev/null)
+all_dirs=$(find ~/Projects ~/Documents/1\ -\ Projects/ ~/Projects/CAB "/Library/Application Support" -mindepth 1 -maxdepth 1 -type d 2>/dev/null)
 if [[ ${#history_dirs[@]} -gt 0 ]]; then
     filtered_dirs=$(printf '%s\n' "$all_dirs" | grep -vxF "$(printf '%s\n' "${history_dirs[@]}")")
 else

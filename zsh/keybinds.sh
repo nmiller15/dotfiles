@@ -24,7 +24,7 @@ function zle_tmux_sessionizer {
     zle reset-prompt
 }
 
-zle -N zle_sf;                  bindkey -r '^G' && bindkey '^G' zle_sf
+zle -N zle_sf;                  bindkey -r '^E' && bindkey '^E' zle_sf
 zle -N zle_reload;              bindkey -r '^A' && bindkey '^A' zle_reload
 zle -N zle_reload_deploy;       bindkey -r '^B' && bindkey '^B' zle_reload_deploy
-zle -N zle_tmux_sessionizer;    bindkey -r '^E' && bindkey '^E' zle_tmux_sessionizer
+zle -N zle_tmux_sessionizer;    bindkey -r '^T' && bindkey '^T' zle_tmux_sessionizer
