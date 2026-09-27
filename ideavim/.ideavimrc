@@ -1,0 +1,48 @@
+" IdeaVim config for JetBrains Rider
+" Ported from vsvim/_vimrc (Visual Studio / VSVim)
+
+let mapleader = "<Space>"
+
+" Show line numbers
+set number
+set relativenumber
+
+set visualbell
+set scrolloff=10
+
+" Search
+" NOTE: the original Vim `highlight Search ctermfg=...` line is intentionally
+" dropped; IdeaVim rejects cterm highlight args. Colorscheme handles this.
+set hlsearch
+set incsearch
+set inccommand
+nnoremap <Esc> :nohlsearch<CR>
+
+" Highlight yanked text
+set highlightedyank
+let g:highlightedyank_highlight_duration = 500
+
+" Remappings
+" NOTE: <Action>(id) requires a plain `nmap`/`vmap`; it does NOT work with
+" nnoremap/vnoremap. Pure-vim mappings below still use noremap.
+nmap <Leader>e  <Action>(ActivateProjectToolWindow)
+nmap <Leader>sf <Action>(SearchEverywhere)
+nmap <Leader>sl <Action>(ActivateDebugToolWindow)
+nmap <Leader>sd <Action>(ActivateProblemsViewToolWindow)
+nmap <Leader>sk <Action>(ShowSettings)
+nmap <Leader>st <Action>(ActivateRunToolWindow)
+nmap <Leader>gs <Action>(ActivateCommitToolWindow)
+nmap <Leader>so :source ~/.ideavimrc<CR>:echo "ideavimrc sourced..."<CR>
+
+nnoremap <Leader>r :redo<CR>
+xnoremap <Leader>p "_dP
+
+nmap grd <Action>(GotoDeclaration)
+nmap grr <Action>(FindUsages)
+nmap gra <Action>(QuickActionPopup)
+nmap gri <Action>(GotoImplementation)
+
+nmap gcc <Action>(CommentByLineComment)
+vmap gc  <Action>(CommentByLineComment)
+
+nmap K   <Action>(ShowHoverInfo)
