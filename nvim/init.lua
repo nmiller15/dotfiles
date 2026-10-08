@@ -963,6 +963,39 @@ require('lazy').setup({
   },
 
   {
+    -- F# support
+    'ionide/Ionide-vim',
+    ft = { 'fsharp', 'fsharp_project' },
+    config = function()
+      -- if you need extra configuration/events, example with 'Show tooltips on CursorHold'
+      -- vim.api.nvim_create_autocmd({ 'CursorHold' }, {
+      --   pattern = { '*.fs', '*.fsi', '*.fsx' },
+      --   callback = function()
+      --     vim.fn['fsharp#showTooltip']()
+      --   end,
+      -- })
+
+      -- Show fsi in horizontal split
+      -- vim.g["fsharp#fsi_window_command"] = "vnew"
+      vim.g['fsharp#lsp_codelens'] = 0
+
+      -- Ionide refreshes code lenses on attach even with this setting off.
+      -- LspAttach runs before Ionide's on_attach and Neovim's capability setup,
+      -- so remove code-lens support before either can request lenses.
+      vim.api.nvim_create_autocmd('LspAttach', {
+        group = vim.api.nvim_create_augroup('fsharp_no_codelens', { clear = true }),
+        pattern = { '*.fs', '*.fsi', '*.fsx' },
+        callback = function(event)
+          local client = vim.lsp.get_client_by_id(event.data.client_id)
+          if client and client.name == 'ionide' then
+            client.server_capabilities.codeLensProvider = nil
+          end
+        end,
+      })
+    end,
+  },
+
+  {
     'rose-pine/neovim',
     name = 'rose-pine',
     config = function()
