@@ -19,9 +19,9 @@ function zle_sf {
 }
 
 function zle_tmux_sessionizer {
-    zle -I
-    eval tmux_sessionizer.sh
-    zle reset-prompt
+    zle push-input
+    BUFFER=tmux_sessionizer.sh
+    zle accept-line
 }
 
 zle -N zle_sf;                  bindkey -r '^G' && bindkey '^G' zle_sf
