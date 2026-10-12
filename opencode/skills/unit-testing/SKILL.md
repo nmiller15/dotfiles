@@ -24,6 +24,11 @@ description: Plan and implement targeted unit tests for new or changed business 
 - Focus on new or modified business logic rather than unrelated code.
 - If neither context contains relevant changes, report that no suitable work was found.
 
+## Reporting Tests
+
+- Tests should be reported in a table
+- Display the test name, description of the behavior, lines of the source code implementation it is testing
+
 ## Unit Test Principles
 
 - Test observable behavior: inputs, outputs, state changes, and externally visible side effects where relevant.
