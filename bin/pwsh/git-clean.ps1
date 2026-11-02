@@ -1,11 +1,3 @@
-[CmdletBinding()]
-param(
-    [Alias("r")]
-    [switch]$IncludeRemote,
-    [Alias("a")]
-    [switch]$AllAuthors
-)
-
 $ErrorActionPreference = 'Stop'
 
 # ─────────────────────────────────────────────────────────────────────────────
@@ -103,9 +95,10 @@ if ($LASTEXITCODE -ne 0)
 }
 Show-Success "Fetched"
 
-# Build worktree lookup table (branch name -> worktree path)
-$worktrees = @{}
+# Discover linked worktrees only; the first record is the main (or bare) repo.
+$worktrees = @()
 $worktreeList = git worktree list --porcelain 2>$null
+$isMainWorktree = $true
 $currentPath = $null
 
 foreach ($line in $worktreeList)
@@ -114,212 +107,106 @@ foreach ($line in $worktreeList)
     {
         $currentPath = $Matches[1]
     }
-    elseif ($line -match "^branch refs/heads/(.+)$" -and $currentPath)
+    elseif ($line -match "^branch refs/heads/(.+)$" -and $currentPath -and -not $isMainWorktree)
     {
         $branchName = $Matches[1]
-        $worktrees[$branchName] = $currentPath
-        $currentPath = $null
+        if ($branchName -notin @('main', 'master', 'beta'))
+        {
+            $worktrees += [PSCustomObject]@{
+                Name = $branchName
+                Path = $currentPath
+            }
+        }
     }
     elseif ($line -eq "")
     {
         $currentPath = $null
+        $isMainWorktree = $false
     }
 }
 
-# Scan filesystem for orphaned directories (subdirs not tracked by any worktree)
-$protectedNames = @("main", "master", "beta")
-$worktreePathSet = [System.Collections.Generic.HashSet[string]]::new(
-    [System.StringComparer]::OrdinalIgnoreCase
-)
-foreach ($p in $worktrees.Values) { $worktreePathSet.Add($p) | Out-Null }
-
-$orphanedDirs = Get-ChildItem -Directory |
-    Where-Object {
-        $_.Name -notin $protectedNames -and
-        -not $worktreePathSet.Contains($_.FullName)
-    } |
-    ForEach-Object {
-        [PSCustomObject]@{
-            Name         = $_.Name
-            FullPath     = $_.FullName
-            IsOrphanDir  = $true
-        }
-    }
-
-# Get current git user info for authorship filtering
-$currentUserEmail = (git config user.email 2>$null).Trim()
-$currentUserName  = (git config user.name  2>$null).Trim()
-
-# Get all local branches except main/master/beta
-$branches = git branch --no-column --format='%(refname:short)|%(upstream:short)' |
-    Where-Object { $_ } |
-    ForEach-Object {
-        $parts = $_ -split '\|', 2
-        $name = $parts[0]
-        $upstream = $parts[1]
-        if ($name -in @("main","master","beta")) { Write-Verbose "Skipping '$name': protected branch"; return }
-        $logOutput = git log -1 --format="%ci|%ae|%an|%s" $name 2>$null
-        if (-not $logOutput) { Write-Verbose "Skipping '$name': no log output"; return }
-        $logParts = $logOutput -split '\|', 4
-        [PSCustomObject]@{
-            Name          = $name
-            Upstream      = $upstream
-            IsRemoteOnly  = $false
-            Date          = [datetime]::Parse($logParts[0])
-            CommitMsg     = $logParts[3]
-            AuthorEmail   = $logParts[1].Trim()
-            AuthorName    = $logParts[2].Trim()
-            IsCurrentUser = $logParts[1].Trim() -eq $currentUserEmail
-        }
-    } |
-    Where-Object { $_ }
-
-# If -IncludeRemote, also collect remote-only branches (no local counterpart)
-$remoteOnlyBranches = @()
-if ($IncludeRemote)
-{
-    $allLocalNames = git branch --no-column --format='%(refname:short)' | Where-Object { $_ }
-
-    $remoteOnlyBranches = git branch -r --no-column --format='%(refname:short)' |
-        Where-Object { $_ -and $_ -notmatch '(->|HEAD)' } |
-        ForEach-Object {
-            $refName = $_
-            $name = $_ -replace '^origin/', ''
-            if ($name -in @("main","master","beta")) { Write-Verbose "Skipping remote '$name': protected branch"; return }
-            if ($name -in $allLocalNames) { return }
-            $logOutput = git log -1 --format="%ci|%ae|%an|%s" $refName 2>$null
-            if (-not $logOutput) { Write-Verbose "Skipping remote '$name': no log output"; return }
-            $logParts = $logOutput -split '\|', 4
-            if (-not $AllAuthors)
-            {
-                $authoredCommit = git log --author=$currentUserName --oneline $refName 2>$null
-                if (-not $authoredCommit) { Write-Verbose "Skipping remote '$name': no commits by '$currentUserName'"; return }
-            }
-            [PSCustomObject]@{
-                Name          = $name
-                Upstream      = $refName
-                IsRemoteOnly  = $true
-                Date          = [datetime]::Parse($logParts[0])
-                CommitMsg     = $logParts[3]
-                AuthorEmail   = $logParts[1].Trim()
-                AuthorName    = $logParts[2].Trim()
-                IsCurrentUser = $logParts[1].Trim() -eq $currentUserEmail
-            }
-        } |
-        Where-Object { $_ }
-}
-
-# Combine local and remote-only branches, sorted oldest-first
-$allBranches = (@($branches) + @($remoteOnlyBranches)) |
-    Where-Object { $_ } |
-    Sort-Object Date
-
-if ((-not $allBranches -or $allBranches.Count -eq 0) -and (-not $orphanedDirs -or @($orphanedDirs).Count -eq 0))
+if ($worktrees.Count -eq 0)
 {
     Write-Host ""
-    Write-Host "  ${gray}No branches or directories to clean.$reset"
+    Write-Host "  ${gray}No worktrees to clean.$reset"
     Write-Host ""
     Set-Location $startingDir
     exit 0
 }
 
-# ── Orphaned directory prompts ────────────────────────────────────────────────
-foreach ($orphan in $orphanedDirs)
+# ── Worktree prompts ──────────────────────────────────────────────────────────
+$hadFailures = $false
+foreach ($worktree in $worktrees)
 {
-    Write-Host ""
-    Write-Host "  ${gray}┌$reset $cyan$($orphan.Name)$reset"
-    Write-Host "  ${gray}│ Orphaned directory (not linked to a worktree)$reset"
-    Write-Host "  ${gray}│ Path: $($orphan.FullPath)$reset"
-    Write-Host -NoNewline "  ${gray}└$reset Delete? ${gray}[y/N]:$reset "
+    $branch = $worktree.Name
+    $worktreePath = $worktree.Path
+    $logOutput = git log -1 --format='%ci|%s' "refs/heads/$branch" 2>$null
+    $logParts = $logOutput -split '\|', 2
+    $commitMsg = $logParts[1]
+    if ($commitMsg.Length -gt 50) { $commitMsg = $commitMsg.Substring(0, 47) + '...' }
+    $daysAgo = (New-TimeSpan -Start ([datetime]::Parse($logParts[0])) -End (Get-Date)).Days
 
-    $response = Read-Host
-    if ($response -match '^(y|yes)$')
+    $remoteRef = "refs/heads/$branch"
+    $remoteRefs = git ls-remote --heads origin $remoteRef 2>$null
+    if ($LASTEXITCODE -ne 0)
     {
-        Show-Step "Removing orphaned directory"
-        cmd /c rmdir /s /q "`"\\?\$($orphan.FullPath)`"" 2>$null
-        if ($LASTEXITCODE -ne 0)
-        {
-            Show-Failure "Failed to remove directory: $($orphan.FullPath)"
-        }
-        else
-        {
-            git worktree prune 2>$null | Out-Null
-            Show-Success "Directory removed and worktree refs pruned"
-        }
+        Show-Failure "Failed to check origin branch: $branch"
+        $hadFailures = $true
+        continue
     }
-}
-
-# ── Branch prompts ────────────────────────────────────────────────────────────
-foreach ($branchInfo in $allBranches)
-{
-    $branch = $branchInfo.Name
-    $upstream = $branchInfo.Upstream
-    $isRemoteOnly = $branchInfo.IsRemoteOnly
-
-    $commitMsg = $branchInfo.CommitMsg
-    if ($commitMsg.Length -gt 50) { $commitMsg = $commitMsg.Substring(0, 47) + "..." }
-    $daysAgo = (New-TimeSpan -Start $branchInfo.Date -End (Get-Date)).Days
-
-    # Build box-style prompt
-    $worktreePath = if (-not $isRemoteOnly) { $worktrees[$branch] } else { $null }
+    $hasRemoteBranch = @($remoteRefs | Where-Object {
+        ($_ -split "`t", 2)[1] -ceq $remoteRef
+    }).Count -gt 0
 
     Write-Host ""
     Write-Host "  ${gray}┌$reset $cyan$branch$reset"
     Write-Host "  ${gray}│ $daysAgo days ago: `"$commitMsg`"$reset"
-    if (-not $branchInfo.IsCurrentUser)
-    {
-        Write-Host "  ${gray}│ Author: $($branchInfo.AuthorName) <$($branchInfo.AuthorEmail)>$reset"
-    }
-    if ($isRemoteOnly)
-    {
-        Write-Host "  ${gray}│ Remote only$reset"
-    }
-    elseif ($upstream)
-    {
-        Write-Host "  ${gray}│ Remote: $upstream$reset"
-    }
-    else
-    {
-        Write-Host "  ${gray}│ Local only$reset"
-    }
-    if ($worktreePath)
-    {
-        Write-Host "  ${gray}│ Worktree: $worktreePath$reset"
-    }
+    Write-Host "  ${gray}│ Worktree: $worktreePath$reset"
+    Write-Host "  ${gray}│ Remote: $(if ($hasRemoteBranch) { 'origin' } else { 'none' })$reset"
     Write-Host -NoNewline "  ${gray}└$reset Delete? ${gray}[y/N]:$reset "
-    
-    $response = Read-Host
-    if ($response -match '^(y|yes)$')
-    {
-        # Remove worktree if it exists (local branches only)
-        if ($worktreePath)
-        {
-            Show-Step "Removing worktree"
-            git worktree remove --force $worktreePath 2>$null | Out-Null
-            cmd /c rmdir /s /q "`"\\?\$worktreePath`"" 2>$null
-            if ($LASTEXITCODE -ne 0)
-            {
-                Show-Failure "Failed to remove worktree directory: $worktreePath"
-            }
-            else
-            {
-                Show-Success "Worktree removed"
-            }
-        }
 
-        Show-Step "Deleting branch"
-        if ($isRemoteOnly -or $upstream)
-        {
-            git push origin --delete $branch 2>$null | Out-Null
-        }
-        if (-not $isRemoteOnly)
-        {
-            git branch -D $branch 2>$null | Out-Null
-        }
-        Show-Success "Branch deleted"
+    $response = Read-Host
+    if ($response -notmatch '^(y|yes)$') { continue }
+
+    Show-Step "Removing worktree"
+    git worktree remove --force -- $worktreePath 2>$null | Out-Null
+    if ($LASTEXITCODE -ne 0)
+    {
+        Show-Failure "Failed to remove worktree: $worktreePath"
+        $hadFailures = $true
+        continue
     }
+    if (Test-Path -LiteralPath $worktreePath)
+    {
+        Show-Failure "Worktree directory still exists: $worktreePath"
+        $hadFailures = $true
+        continue
+    }
+    Show-Success "Worktree removed"
+
+    Show-Step "Deleting local branch"
+    git branch -D -- $branch 2>$null | Out-Null
+    if ($LASTEXITCODE -ne 0)
+    {
+        Show-Failure "Failed to delete local branch: $branch"
+        $hadFailures = $true
+        continue
+    }
+    Show-Success "Local branch deleted"
+
+    if (-not $hasRemoteBranch) { continue }
+
+    Show-Step "Deleting origin branch"
+    git push origin --delete $remoteRef 2>$null | Out-Null
+    if ($LASTEXITCODE -ne 0)
+    {
+        Show-Failure "Failed to delete origin branch: $branch"
+        $hadFailures = $true
+        continue
+    }
+    Show-Success "Origin branch deleted"
 }
 
 Write-Host ""
-Set-Location $startingDir
-exit 0
+if (Test-Path -LiteralPath $startingDir) { Set-Location $startingDir }
+exit [int]$hadFailures
