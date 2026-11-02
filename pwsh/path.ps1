@@ -21,5 +21,6 @@ $env:PATH = "$env:PATH;C:\Program Files (x86)\Microsoft Visual Studio\2019\Build
 $env:PATH = "$env:PATH;C:\Users\NMiller\AppData\Local\GitHubDesktop\app-3.5.4\resources\app\git\usr\bin"
 $env:PATH = "$env:PATH;C:\Users\NMiller\AppData\Local\Python\bin"
 $env:PATH = "$env:PATH;C:\Users\NMiller\.dotnetup"
+$env:PATH = "$env:PATH;C:\Users\NMiller\AppData\Local\dotnetup\dotnet "
 
 # $env:PATH = "$env:PATH;C:\Users\NMiller\bin"
