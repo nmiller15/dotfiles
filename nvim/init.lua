@@ -977,7 +977,15 @@ require('lazy').setup({
 
       -- Show fsi in horizontal split
       -- vim.g["fsharp#fsi_window_command"] = "vnew"
-      vim.g['fsharp#lsp_codelens'] = 0
+      vim.g['fsharp#lsp_codelens'] = 1
+      vim.g['fsharp#fsi_keymap'] = 'custom'
+      vim.g['fsharp#fsi_keymap_send'] = 'gfs'
+      vim.g['fsharp#fsi_keymap_toggle'] = 'gfe'
+
+      vim.keymap.set('n', 'gfa', '<cmd>FsiEvalBuffer<CR>', { desc = '[F]si [A]ll' })
+      vim.keymap.set('n', 'gfr', '<cmd>FsiReset<CR>', { desc = '[F]si [R]eset' })
+
+      vim.g['fsharp#fsi_focus_on_send'] = 0 -- 0 to not to focus.
 
       -- Ionide refreshes code lenses on attach even with this setting off.
       -- LspAttach runs before Ionide's on_attach and Neovim's capability setup,
