@@ -1,2 +1,3 @@
 @echo off
-dotnet test -v:n --logger "console;verbosity=detailed"
+pwsh -NoProfile -File "%~dp0dtest.ps1" %*
+exit /b %errorlevel%

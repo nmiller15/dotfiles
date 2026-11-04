@@ -1,0 +1,121 @@
+#!/bin/bash
+# VSTest dotnet test wrapper. Reports live in a temporary directory, not the project.
+set -euo pipefail
+
+script_dir="$(dirname "${BASH_SOURCE[0]}")"
+formatter="$script_dir/../python/dtest_report.py"
+python="${DTEST_PYTHON:-python3}"
+dotnet="${DTEST_DOTNET:-dotnet}"
+reports=()
+test_args=()
+temp_dir=''
+child=''
+
+cleanup() {
+    if [[ -n "$child" ]] && kill -0 "$child" 2>/dev/null; then
+        kill "$child" 2>/dev/null || true
+        wait "$child" 2>/dev/null || true
+    fi
+    if [[ -n "$temp_dir" ]]; then rm -rf -- "$temp_dir"; fi
+}
+trap cleanup EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM
+
+while (( $# )); do
+    case "$1" in
+        --report)
+            if (( $# < 2 )); then printf 'dtest: --report needs a TRX file\n' >&2; exit 1; fi
+            reports+=("$2"); shift 2 ;;
+        --report=*) reports+=("${1#*=}"); shift ;;
+        --logger|--logger=*|-l|--results-directory|--results-directory=*|--list-tests|-t|--)
+            printf 'dtest: --logger, --results-directory, --list-tests and -- are managed by dtest\n' >&2
+            exit 1 ;;
+        *) test_args+=("$1"); shift ;;
+    esac
+done
+
+if (( ${#reports[@]} )); then
+    if (( ${#test_args[@]} )); then printf 'dtest: --report cannot be combined with test arguments\n' >&2; exit 1; fi
+    "$python" "$formatter" "${reports[@]}"
+    exit $?
+fi
+
+temp_dir="$(mktemp -d "${TMPDIR:-/tmp}/dtest.XXXXXXXX")"
+log="$temp_dir/dotnet.log"
+: >"$log"
+"$dotnet" test "${test_args[@]}" --results-directory "$temp_dir" \
+    --logger trx --logger 'console;verbosity=quiet' >"$log" 2>&1 &
+child=$!
+
+interactive=0
+if [[ -t 1 && -z "${NO_COLOR:-}" ]]; then interactive=1; fi
+stage='Preparing test run'
+frames=('⠋' '⠙' '⠹' '⠸' '⠼' '⠴' '⠦' '⠧' '⠇' '⠏')
+frame=0
+
+stage_done() {
+    local state="$1" icon color
+    if [[ "$state" == success ]]; then icon='✓'; color=32
+    else icon='✗'; color=31; fi
+    if (( interactive )); then
+        printf '\r\033[2K  \033[%sm%s\033[0m \033[90m%s\033[0m\n' "$color" "$icon" "$stage"
+    else
+        printf '  %s %s\n' "$icon" "$stage"
+    fi
+}
+
+advance_stage() {
+    local next="$1"
+    if [[ "$stage" != "$next" ]]; then
+        stage_done success
+        stage="$next"
+        frame=0
+    fi
+}
+
+handle_line() {
+    local line="${1,,}"
+    if [[ "$line" == *restore* ]]; then advance_stage 'Restoring'
+    elif [[ "$line" == *' -> '*.dll* || "$line" == *'build succeeded'* || "$line" == *'build failed'* || "$line" == *compiling* ]]; then advance_stage 'Building'
+    elif [[ "$line" == *'test run for'* || "$line" == *'starting test execution'* || "$line" == *'test file matched'* || "$line" == *'test files matched'* || "$line" == *'passed!'* || "$line" == *'failed!'* ]]; then advance_stage 'Running tests'
+    fi
+}
+
+if (( interactive )); then printf '\n'; fi
+exec 3<"$log"
+while kill -0 "$child" 2>/dev/null; do
+    while IFS= read -r line <&3; do handle_line "$line"; done
+    if (( interactive )); then
+        printf '\r\033[2K  \033[36m%s\033[0m \033[90m%s\033[0m' "${frames[frame % ${#frames[@]}]}" "$stage"
+        (( frame += 1 ))
+    fi
+    sleep 0.12
+done
+while IFS= read -r line <&3; do handle_line "$line"; done
+exec 3<&-
+
+code=0
+wait "$child" || code=$?
+child=''
+if (( code == 0 )); then stage_done success; else stage_done failure; fi
+
+shopt -s globstar nullglob
+reports=("$temp_dir"/**/*.trx)
+if (( ! ${#reports[@]} )); then
+    printf 'No test results found. Check the test runner and filter.\n' >&2
+    if [[ -s "$log" ]]; then while IFS= read -r line; do printf '%s\n' "$line" >&2; done <"$log"; fi
+    exit 1
+fi
+if (( code != 0 )); then
+    while IFS= read -r line; do
+        case "${line,,}" in
+            *': error '*|*'msbuild : error'*|*'build failed.'*) printf '%s\n' "$line" ;;
+        esac
+    done <"$log"
+fi
+
+report_code=0
+"$python" "$formatter" "${reports[@]}" || report_code=$?
+if (( code != 0 )); then exit "$code"; fi
+exit "$report_code"

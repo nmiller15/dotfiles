@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <TestDefinitions>
+    <UnitTest id="1" name="Passes"><TestMethod className="Example.Tests.CalculatorTests" name="Passes" /></UnitTest>
+  </TestDefinitions>
+  <Results>
+    <UnitTestResult testId="1" testName="Passes" outcome="Passed" duration="00:00:00.012" />
+  </Results>
+</TestRun>

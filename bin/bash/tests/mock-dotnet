@@ -1,0 +1,28 @@
+#!/bin/bash
+set -euo pipefail
+
+[[ "$1" == test ]] || exit 2
+shift
+while (( $# )); do
+    case "$1" in
+        --results-directory) directory="$2"; shift 2 ;;
+        --filter) [[ "$2" == 'Name~Example with spaces' ]] || exit 2; shift 2 ;;
+        *) shift ;;
+    esac
+done
+[[ -n "${directory:-}" ]] || exit 2
+printf '  All projects are up-to-date for restore.\n'
+sleep 0.15
+if [[ "${DTEST_MOCK_FAILURE:-}" == build ]]; then
+    printf 'Build FAILED.\n'
+    exit 1
+fi
+printf '  Example.Tests -> Example.Tests.dll\n'
+sleep 0.15
+printf 'Test run for Example.Tests.dll\n'
+sleep 0.15
+if [[ "${DTEST_MOCK_FAILURE:-}" == tests ]]; then
+    cp -- "$DTEST_FIXTURES/dtest-sample.trx" "$directory/results.trx"
+    exit 1
+fi
+cp -- "$DTEST_FIXTURES/dtest-passing.trx" "$directory/results.trx"

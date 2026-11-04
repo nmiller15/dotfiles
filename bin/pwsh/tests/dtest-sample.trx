@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TestRun xmlns="http://microsoft.com/schemas/VisualStudio/TeamTest/2010">
+  <TestDefinitions>
+    <UnitTest id="1" name="Passes"><TestMethod className="Example.Tests.CalculatorTests" name="Passes" /></UnitTest>
+    <UnitTest id="2" name="Fails"><TestMethod className="Example.Tests.CalculatorTests" name="Fails" /></UnitTest>
+    <UnitTest id="3" name="Pending"><TestMethod className="Example.Tests.OtherTests" name="Pending" /></UnitTest>
+    <UnitTest id="4" name="OtherFails"><TestMethod className="Example.Tests.OtherTests" name="OtherFails" /></UnitTest>
+  </TestDefinitions>
+  <Results>
+    <UnitTestResult testId="1" testName="CalculatorTests.Passes(2)" outcome="Passed" duration="00:00:00.012" />
+    <UnitTestResult testId="2" testName="Fails" outcome="Failed" duration="00:00:00.002">
+      <Output><ErrorInfo><Message>Expected: 2&#10;Actual: 3</Message><StackTrace>at CalculatorTests.Fails()</StackTrace></ErrorInfo></Output>
+    </UnitTestResult>
+    <UnitTestResult testId="3" testName="Pending" outcome="NotExecuted" />
+    <UnitTestResult testId="4" testName="OtherFails" outcome="Failed">
+      <Output><ErrorInfo><Message>Other failure</Message><StackTrace>at OtherTests.OtherFails()</StackTrace></ErrorInfo></Output>
+    </UnitTestResult>
+  </Results>
+</TestRun>
