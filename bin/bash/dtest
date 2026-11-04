@@ -44,7 +44,8 @@ fi
 temp_dir="$(mktemp -d "${TMPDIR:-/tmp}/dtest.XXXXXXXX")"
 log="$temp_dir/dotnet.log"
 : >"$log"
-"$dotnet" test "${test_args[@]}" --results-directory "$temp_dir" \
+if (( ${#test_args[@]} )); then set -- "${test_args[@]}"; else set --; fi
+"$dotnet" test "$@" --results-directory "$temp_dir" \
     --logger trx --logger 'console;verbosity=quiet' >"$log" 2>&1 &
 child=$!
 
@@ -75,7 +76,8 @@ advance_stage() {
 }
 
 handle_line() {
-    local line="${1,,}"
+    local line
+    line="$(printf '%s' "$1" | tr '[:upper:]' '[:lower:]')"
     if [[ "$line" == *restore* ]]; then advance_stage 'Restoring'
     elif [[ "$line" == *' -> '*.dll* || "$line" == *'build succeeded'* || "$line" == *'build failed'* || "$line" == *compiling* ]]; then advance_stage 'Building'
     elif [[ "$line" == *'test run for'* || "$line" == *'starting test execution'* || "$line" == *'test file matched'* || "$line" == *'test files matched'* || "$line" == *'passed!'* || "$line" == *'failed!'* ]]; then advance_stage 'Running tests'
@@ -100,8 +102,10 @@ wait "$child" || code=$?
 child=''
 if (( code == 0 )); then stage_done success; else stage_done failure; fi
 
-shopt -s globstar nullglob
-reports=("$temp_dir"/**/*.trx)
+reports=()
+while IFS= read -r -d '' report; do
+    reports+=("$report")
+done < <(find "$temp_dir" -type f -name '*.trx' -print0)
 if (( ! ${#reports[@]} )); then
     printf 'No test results found. Check the test runner and filter.\n' >&2
     if [[ -s "$log" ]]; then while IFS= read -r line; do printf '%s\n' "$line" >&2; done <"$log"; fi
@@ -109,7 +113,8 @@ if (( ! ${#reports[@]} )); then
 fi
 if (( code != 0 )); then
     while IFS= read -r line; do
-        case "${line,,}" in
+        lower="$(printf '%s' "$line" | tr '[:upper:]' '[:lower:]')"
+        case "$lower" in
             *': error '*|*'msbuild : error'*|*'build failed.'*) printf '%s\n' "$line" ;;
         esac
     done <"$log"

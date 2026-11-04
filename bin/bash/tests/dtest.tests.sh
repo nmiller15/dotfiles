@@ -33,6 +33,11 @@ output="$(bash "$wrapper" --filter 'Name~Example with spaces')" || code=$?
 for stage in 'Preparing test run' 'Restoring' 'Building' 'Running tests'; do check "$stage" "$output"; done
 check 'Passed:  1' "$output"
 
+export DTEST_MOCK_NESTED=1
+output="$(bash "$wrapper")"
+check 'Passed:  1' "$output"
+unset DTEST_MOCK_NESTED
+
 export DTEST_MOCK_FAILURE=tests
 code=0
 output="$(bash "$wrapper")" || code=$?

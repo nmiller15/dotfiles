@@ -21,6 +21,10 @@ printf '  Example.Tests -> Example.Tests.dll\n'
 sleep 0.15
 printf 'Test run for Example.Tests.dll\n'
 sleep 0.15
+if [[ "${DTEST_MOCK_NESTED:-}" == 1 ]]; then
+    directory="$directory/nested results"
+    mkdir -p "$directory"
+fi
 if [[ "${DTEST_MOCK_FAILURE:-}" == tests ]]; then
     cp -- "$DTEST_FIXTURES/dtest-sample.trx" "$directory/results.trx"
     exit 1
