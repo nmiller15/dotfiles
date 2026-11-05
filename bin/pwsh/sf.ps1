@@ -3,7 +3,8 @@ $HistoryLimit = 15
 
 # Read and clean history (filter non-existent dirs, write cleaned list back)
 $historyDirs = @()
-if (Test-Path $HistoryFile) {
+if (Test-Path $HistoryFile)
+{
     $historyDirs = Get-Content $HistoryFile | Where-Object { Test-Path $_ -PathType Container }
     Set-Content $HistoryFile -Value $historyDirs
 }
@@ -17,9 +18,11 @@ $allDirs = Get-ChildItem -Path "C:\Repos\Github", "C:\Code", "C:\Users\NMiller\O
 # Combine: history first, then the rest
 $combined = @($historyDirs) + @($allDirs)
 
-$selected = $combined | fzf --preview "ls {}" --height=50%
+$selected = $combined | fzf --with-shell 'pwsh -NoProfile -Command' `
+    --preview 'Get-ChildItem -LiteralPath {} -Force' --height=50%
 
-if ($selected.Length -gt 0) {
+if ($selected.Length -gt 0)
+{
     # Update history: prepend selection, dedup, cap at limit
     $newHistory = (@($selected) + @($historyDirs)) | Select-Object -Unique | Select-Object -First $HistoryLimit
     Set-Content $HistoryFile -Value $newHistory
