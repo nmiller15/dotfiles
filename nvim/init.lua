@@ -819,19 +819,19 @@ require('lazy').setup({
   --     vim.g['prettier#exec_cmd_path'] = 'prettier --tab-width=4 --use-tabs=false'
   --   end,
   -- },
-  { -- Github Copilot
-    'zbirenbaum/copilot.lua',
-    event = 'InsertEnter',
-    config = function()
-      require('copilot').setup {
-        suggestion = { enabled = false },
-        panel = { enabled = false },
-      }
-    end,
-  },
-  {
-    'giuxtaposition/blink-cmp-copilot',
-  },
+  -- { -- Github Copilot
+  --   'zbirenbaum/copilot.lua',
+  --   event = 'InsertEnter',
+  --   config = function()
+  --     require('copilot').setup {
+  --       suggestion = { enabled = false },
+  --       panel = { enabled = false },
+  --     }
+  --   end,
+  -- },
+  -- {
+  --   'giuxtaposition/blink-cmp-copilot',
+  -- },
   { -- Autocompletion
     'saghen/blink.cmp',
     event = 'VimEnter',
@@ -855,7 +855,7 @@ require('lazy').setup({
           --    See the README about individual language/framework/plugin snippets:
           --    https://github.com/rafamadriz/friendly-snippets
           'rafamadriz/friendly-snippets',
-          'giuxtaposition/blink-cmp-copilot',
+          -- 'giuxtaposition/blink-cmp-copilot',
         },
         config = function()
           require('luasnip.loaders.from_vscode').lazy_load()
@@ -924,14 +924,19 @@ require('lazy').setup({
       },
 
       sources = {
-        default = { 'copilot', 'lsp', 'path', 'lazydev' },
+        default = {
+          -- 'copilot',
+          'lsp',
+          'path',
+          'lazydev',
+        },
         providers = {
-          copilot = {
-            name = 'copilot',
-            module = 'blink-cmp-copilot',
-            score_offset = 2000,
-            async = true,
-          },
+          -- copilot = {
+          --   name = 'copilot',
+          --   module = 'blink-cmp-copilot',
+          --   score_offset = 2000,
+          --   async = true,
+          -- },
           lsp = { score_offset = 1000 },
           path = { score_offset = 300 },
           lazydev = { score_offset = 200, module = 'lazydev.integrations.blink' },
