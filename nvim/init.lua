@@ -1032,41 +1032,36 @@ require('lazy').setup({
   --   end,
   -- },
   {
-    'vague-theme/vague.nvim',
-    name = 'vague',
+    'oxidescheme/nvim',
+    name = 'oxide',
+    lazy = false,
+    priority = 1000,
     config = function()
-      require('vague').setup {
-        transparent = true, -- If true, background is not set
-        bold = false, -- Disable bold globally
-        italic = false, -- Disable italic globally
-        colors = {
-          bg = '#141415',
-          inactiveBg = '#1c1c24',
-          fg = '#cdcdcd',
-          floatBorder = '#878787',
-          line = '#252530',
-          comment = '#606079',
-          builtin = '#b4d4cf',
-          func = '#c48282',
-          string = '#e8b589',
-          number = '#e0a363',
-          property = '#c3c3d5',
-          constant = '#aeaed1',
-          parameter = '#bb9dbd',
-          visual = '#333738',
-          error = '#d8647e',
-          warning = '#f3be7c',
-          hint = '#7e98e8',
-          operator = '#90a0b5',
-          keyword = '#6e94b2',
-          type = '#9bb4bc',
-          search = '#405065',
-          plus = '#7fa563',
-          delta = '#f3be7c',
-        },
-      }
+      require('oxide').setup {
+        transparent = true, -- Enable transparent background
+        terminal_colors = true, -- Configure terminal colors
 
-      vim.cmd.colorscheme 'vague'
+        styles = {
+          comments = { italic = true },
+          keywords = {},
+          functions = {},
+          variables = {},
+          strings = {},
+          booleans = {},
+          numbers = {},
+        },
+
+        -- Override colors
+        -- on_colors = function(colors)
+        --   colors.red = '#ff0000' -- Make red more intense
+        -- end,
+
+        -- Override highlight groups
+        -- on_highlights = function(highlights, colors)
+        --   highlights.Comment = { fg = colors.green, italic = true }
+        -- end,
+      }
+      vim.cmd.colorscheme 'oxide'
     end,
   },
   -- Highlight todo, notes, etc in comments

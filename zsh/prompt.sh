@@ -2,10 +2,10 @@
 
 setopt prompt_subst
 
-ACCENT="%F{#c48282}"  # Vague func
-GIT="%F{#b4d4cf}"     # Vague builtin
-MUTED="%F{#878787}"   # Vague floatBorder
-PATH_COLOR="%F{#c3c3d5}" # Vague property
+ACCENT="%F{#00baaa}"    # Oxide teal
+GIT="%F{#9ca81f}"       # Oxide lime
+MUTED="%F{#808080}"     # Oxide subtext1
+PATH_COLOR="%F{#3ba6f5}" # Oxide blue
 RESET="%f"
 FOLDER=""
 TRI_RIGHT="▶"
@@ -13,7 +13,7 @@ GIT_SYMBOL=""
 
 parse_git_branch() {
   local branch
-  branch=$(git symbolic-ref --quiet --short HEAD 2>/dev/null)
+  branch=$(git symbolic-ref --quiet --short HEAD 2>/dev/null) || return
   [[ -n $branch ]] && print -r -- " ${GIT}${GIT_SYMBOL} ${branch}${RESET}"
 }
 
