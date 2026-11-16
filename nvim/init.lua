@@ -1042,6 +1042,22 @@ require('lazy').setup({
         end,
       })
       vim.cmd.colorscheme 'yugen'
+      local transparent_groups = {
+        'Normal',
+        'NormalNC',
+        'NormalFloat',
+        'FloatBorder',
+        'SignColumn',
+        'EndOfBuffer',
+        'LineNr',
+        'CursorLineNr',
+        'StatusLine',
+        'StatusLineNC',
+      }
+
+      for _, group in ipairs(transparent_groups) do
+        vim.api.nvim_set_hl(0, group, { bg = 'none', ctermbg = 'none' })
+      end
     end,
   },
   -- Highlight todo, notes, etc in comments
