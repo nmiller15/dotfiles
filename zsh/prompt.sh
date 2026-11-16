@@ -2,10 +2,10 @@
 
 setopt prompt_subst
 
-ACCENT="%F{#00baaa}"    # Oxide teal
-GIT="%F{#9ca81f}"       # Oxide lime
-MUTED="%F{#808080}"     # Oxide subtext1
-PATH_COLOR="%F{#3ba6f5}" # Oxide blue
+ACCENT="%F{#FFBE89}"     # Yugen primary
+GIT="%F{#7EAB8E}"        # Yugen success
+MUTED="%F{#A9A9A9}"      # Yugen color300
+PATH_COLOR="%F{#D4D4D4}" # Yugen color200
 RESET="%f"
 FOLDER=""
 TRI_RIGHT="▶"

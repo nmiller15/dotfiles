@@ -1032,36 +1032,16 @@ require('lazy').setup({
   --   end,
   -- },
   {
-    'oxidescheme/nvim',
-    name = 'oxide',
-    lazy = false,
-    priority = 1000,
+    'bettervim/yugen.nvim',
     config = function()
-      require('oxide').setup {
-        transparent = true, -- Enable transparent background
-        terminal_colors = true, -- Configure terminal colors
-
-        styles = {
-          comments = { italic = true },
-          keywords = {},
-          functions = {},
-          variables = {},
-          strings = {},
-          booleans = {},
-          numbers = {},
-        },
-
-        -- Override colors
-        -- on_colors = function(colors)
-        --   colors.red = '#ff0000' -- Make red more intense
-        -- end,
-
-        -- Override highlight groups
-        -- on_highlights = function(highlights, colors)
-        --   highlights.Comment = { fg = colors.green, italic = true }
-        -- end,
-      }
-      vim.cmd.colorscheme 'oxide'
+      -- mini.statusline links Normal mode to Cursor, which is bright yellow in Yugen.
+      vim.api.nvim_create_autocmd('ColorScheme', {
+        pattern = 'yugen',
+        callback = function()
+          vim.api.nvim_set_hl(0, 'MiniStatuslineModeNormal', { fg = '#000000', bg = '#FAFAFA', bold = true })
+        end,
+      })
+      vim.cmd.colorscheme 'yugen'
     end,
   },
   -- Highlight todo, notes, etc in comments
