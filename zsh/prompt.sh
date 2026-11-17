@@ -2,10 +2,10 @@
 
 setopt prompt_subst
 
-ACCENT="%F{#cd974b}"     # Alabaster active
-GIT="%F{#95cb82}"        # Alabaster green
-MUTED="%F{#7d7d7d}"      # Alabaster darker foreground
-PATH_COLOR="%F{#cecece}" # Alabaster foreground
+ACCENT="%F{#89a7b1}"     # Slate primary
+GIT="%F{#566981}"        # Slate secondary
+MUTED="%F{#949494}"      # Noirbuddy noir_5
+PATH_COLOR="%F{#d5d5d5}" # Noirbuddy noir_2
 RESET="%f"
 FOLDER=""
 TRI_RIGHT="▶"

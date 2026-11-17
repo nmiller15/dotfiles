@@ -15,3 +15,6 @@ export PATH="/opt/homebrew/bin:$PATH"
 export PATH="/Users/$USER/.matter/bin:$PATH"
 export PATH="/Users/$USER/.dotnet/tools:$PATH"
 export PATH="/Users/$USER/.dotnetup/:$PATH"
+
+# eza uses ~/Library/Application Support/eza by default on macOS.
+export EZA_CONFIG_DIR="$HOME/.config/eza"

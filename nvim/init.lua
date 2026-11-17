@@ -1032,64 +1032,64 @@ require('lazy').setup({
   --   end,
   -- },
   {
-    'dchinmay2/alabaster.nvim',
-    config = function()
-      vim.g['alabaster_dim_comments'] = true
+    'jesseleite/noirbuddy.nvim',
+    dependencies = {
+      { 'tjdevries/colorbuddy.nvim' },
+    },
+    lazy = false,
+    priority = 1000,
+    opts = { preset = 'slate' },
+    config = function(_, opts)
+      local function clear_background()
+        for _, group in ipairs {
+          'Normal',
+          'NormalNC',
+          'NormalFloat',
+          'FloatBorder',
+          'SignColumn',
+          'EndOfBuffer',
+          'LineNr',
+          'CursorLineNr',
+          'WinSeparator',
+          'StatusLine',
+          'StatusLineNC',
+        } do
+          vim.cmd('highlight ' .. group .. ' guibg=NONE ctermbg=NONE')
+        end
+
+        -- Telescope uses its own window highlights; Harpoon uses NormalFloat.
+        -- Preserve each group's foreground and leave selection highlights alone.
+        for _, group in ipairs {
+          'TelescopeNormal',
+          'TelescopePromptNormal',
+          'TelescopeResultsNormal',
+          'TelescopePreviewNormal',
+          'TelescopeBorder',
+          'TelescopePromptBorder',
+          'TelescopeResultsBorder',
+          'TelescopePreviewBorder',
+          'HarpoonWindow',
+          'HarpoonBorder',
+        } do
+          local hl = vim.api.nvim_get_hl(0, { name = group, link = false })
+          if hl.bg or hl.ctermbg then
+            hl.bg = nil
+            hl.ctermbg = nil
+            vim.api.nvim_set_hl(0, group, hl)
+          end
+        end
+      end
 
       vim.api.nvim_create_autocmd('ColorScheme', {
-        group = vim.api.nvim_create_augroup('alabaster_transparent', { clear = true }),
-        pattern = 'alabaster',
-        callback = function()
-          for _, group in ipairs {
-            'Normal',
-            'NormalNC',
-            'NormalFloat',
-            'FloatBorder',
-            'SignColumn',
-            'EndOfBuffer',
-            'LineNr',
-            'CursorLineNr',
-            'StatusLine',
-            'StatusLineNC',
-          } do
-            vim.cmd('highlight ' .. group .. ' guibg=NONE ctermbg=NONE')
-          end
-        end,
+        group = vim.api.nvim_create_augroup('noirbuddy_transparent', { clear = true }),
+        pattern = 'noirbuddy',
+        callback = clear_background,
       })
 
-      vim.cmd.set 'termguicolors'
-      vim.cmd.colorscheme 'alabaster'
+      require('noirbuddy').setup(opts)
+      clear_background()
     end,
   },
-  -- {
-  --   'bettervim/yugen.nvim',
-  --   config = function()
-  --     -- mini.statusline links Normal mode to Cursor, which is bright yellow in Yugen.
-  --     vim.api.nvim_create_autocmd('ColorScheme', {
-  --       pattern = 'yugen',
-  --       callback = function()
-  --         vim.api.nvim_set_hl(0, 'MiniStatuslineModeNormal', { fg = '#000000', bg = '#FAFAFA', bold = true })
-  --       end,
-  --     })
-  --     vim.cmd.colorscheme 'yugen'
-  --     local transparent_groups = {
-  --       'Normal',
-  --       'NormalNC',
-  --       'NormalFloat',
-  --       'FloatBorder',
-  --       'SignColumn',
-  --       'EndOfBuffer',
-  --       'LineNr',
-  --       'CursorLineNr',
-  --       'StatusLine',
-  --       'StatusLineNC',
-  --     }
-  --
-  --     for _, group in ipairs(transparent_groups) do
-  --       vim.api.nvim_set_hl(0, group, { bg = 'none', ctermbg = 'none' })
-  --     end
-  --   end,
-  -- },
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
 
