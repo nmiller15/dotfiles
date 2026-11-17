@@ -12,11 +12,11 @@ function prompt
     }
     $global:LASTEXITCODE = $previousExitCode
 
-    # Yugen palette (true color)
-    $accent = "`e[38;2;255;190;137m" # primary #FFBE89
-    $gitColor = "`e[38;2;126;171;142m" # success #7EAB8E
-    $muted = "`e[38;2;169;169;169m" # color300 #A9A9A9
-    $pathColor = "`e[38;2;212;212;212m" # color200 #D4D4D4
+    # Alabaster palette (true color)
+    $accent = "`e[38;2;205;151;75m" # active #cd974b
+    $gitColor = "`e[38;2;149;203;130m" # green #95cb82
+    $muted = "`e[38;2;125;125;125m" # darker foreground #7d7d7d
+    $pathColor = "`e[38;2;206;206;206m" # foreground #cecece
     $reset = "`e[0m"
 
     Write-Host "${accent}$env:USERNAME@$env:COMPUTERNAME ${muted} ${pathColor}$PWD" -NoNewline

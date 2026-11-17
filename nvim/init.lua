@@ -1032,34 +1032,64 @@ require('lazy').setup({
   --   end,
   -- },
   {
-    'bettervim/yugen.nvim',
+    'dchinmay2/alabaster.nvim',
     config = function()
-      -- mini.statusline links Normal mode to Cursor, which is bright yellow in Yugen.
+      vim.g['alabaster_dim_comments'] = true
+
       vim.api.nvim_create_autocmd('ColorScheme', {
-        pattern = 'yugen',
+        group = vim.api.nvim_create_augroup('alabaster_transparent', { clear = true }),
+        pattern = 'alabaster',
         callback = function()
-          vim.api.nvim_set_hl(0, 'MiniStatuslineModeNormal', { fg = '#000000', bg = '#FAFAFA', bold = true })
+          for _, group in ipairs {
+            'Normal',
+            'NormalNC',
+            'NormalFloat',
+            'FloatBorder',
+            'SignColumn',
+            'EndOfBuffer',
+            'LineNr',
+            'CursorLineNr',
+            'StatusLine',
+            'StatusLineNC',
+          } do
+            vim.cmd('highlight ' .. group .. ' guibg=NONE ctermbg=NONE')
+          end
         end,
       })
-      vim.cmd.colorscheme 'yugen'
-      local transparent_groups = {
-        'Normal',
-        'NormalNC',
-        'NormalFloat',
-        'FloatBorder',
-        'SignColumn',
-        'EndOfBuffer',
-        'LineNr',
-        'CursorLineNr',
-        'StatusLine',
-        'StatusLineNC',
-      }
 
-      for _, group in ipairs(transparent_groups) do
-        vim.api.nvim_set_hl(0, group, { bg = 'none', ctermbg = 'none' })
-      end
+      vim.cmd.set 'termguicolors'
+      vim.cmd.colorscheme 'alabaster'
     end,
   },
+  -- {
+  --   'bettervim/yugen.nvim',
+  --   config = function()
+  --     -- mini.statusline links Normal mode to Cursor, which is bright yellow in Yugen.
+  --     vim.api.nvim_create_autocmd('ColorScheme', {
+  --       pattern = 'yugen',
+  --       callback = function()
+  --         vim.api.nvim_set_hl(0, 'MiniStatuslineModeNormal', { fg = '#000000', bg = '#FAFAFA', bold = true })
+  --       end,
+  --     })
+  --     vim.cmd.colorscheme 'yugen'
+  --     local transparent_groups = {
+  --       'Normal',
+  --       'NormalNC',
+  --       'NormalFloat',
+  --       'FloatBorder',
+  --       'SignColumn',
+  --       'EndOfBuffer',
+  --       'LineNr',
+  --       'CursorLineNr',
+  --       'StatusLine',
+  --       'StatusLineNC',
+  --     }
+  --
+  --     for _, group in ipairs(transparent_groups) do
+  --       vim.api.nvim_set_hl(0, group, { bg = 'none', ctermbg = 'none' })
+  --     end
+  --   end,
+  -- },
   -- Highlight todo, notes, etc in comments
   { 'folke/todo-comments.nvim', event = 'VimEnter', dependencies = { 'nvim-lua/plenary.nvim' }, opts = { signs = false } },
 

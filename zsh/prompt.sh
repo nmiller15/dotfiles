@@ -2,10 +2,10 @@
 
 setopt prompt_subst
 
-ACCENT="%F{#FFBE89}"     # Yugen primary
-GIT="%F{#7EAB8E}"        # Yugen success
-MUTED="%F{#A9A9A9}"      # Yugen color300
-PATH_COLOR="%F{#D4D4D4}" # Yugen color200
+ACCENT="%F{#cd974b}"     # Alabaster active
+GIT="%F{#95cb82}"        # Alabaster green
+MUTED="%F{#7d7d7d}"      # Alabaster darker foreground
+PATH_COLOR="%F{#cecece}" # Alabaster foreground
 RESET="%f"
 FOLDER=""
 TRI_RIGHT="▶"
