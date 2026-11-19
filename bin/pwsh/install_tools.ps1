@@ -17,3 +17,5 @@ install_if_missing tree-sitter "winget install -e --id tree-sitter.tree-sitter-c
 install_if_missing weathr "winget install -i Veirt.weathr"
 install_if_missing presenterm "winget install --id=mfontanini.presenterm  -e"
 install_if_missing dotnetup "irm https://aka.ms/dotnetup/get-dotnetup.ps1 | iex"
+install_if_missing csvlens "winget install --id YS-L.csvlens"
+install_if_missing opencode "winget install Anomaly.OpenCode"

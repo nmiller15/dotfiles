@@ -54,6 +54,11 @@ function install_if_missing
 
 function twig
 {
+    & "c:\Code\twig\bin\Release\net9.0\twig.exe" @args
+}
+
+function debug_twig
+{
     & "c:\Code\twig\bin\Debug\net9.0\twig.exe" @args
 }
 
